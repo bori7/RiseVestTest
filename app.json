@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "rise-vest",
+    "slug": "rise-vest",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./shared/assets/images/png/splash.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./shared/assets/images/png/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.boriios.FaceVer"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./shared/assets/images/png/icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.boriios.FaceVer"
+    },
+    "web": {
+      "favicon": "./shared/assets/images/png/icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "594fcd3d-4abf-4442-8888-d8adfb21f088"
+      }
+    }
+  }
+}
