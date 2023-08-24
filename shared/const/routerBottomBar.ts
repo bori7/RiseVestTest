@@ -1,4 +1,3 @@
-import { Source } from "react-native-fast-image";
 import { StackScreenProps } from "@react-navigation/stack";
 
 export enum Tabs {
@@ -25,7 +24,7 @@ export type TabsScreenProps<RouteName extends Tabs> = StackScreenProps<
 export type TabOptions = {
   [key: string]: {
     label: string;
-    icon: Source;
+    icon: any;
     component: React.FC;
   };
 };
