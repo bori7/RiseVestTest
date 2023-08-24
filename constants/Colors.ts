@@ -27,6 +27,7 @@ export const COLORS = {
     colorFour: "#000",
     colorFive: "#8B9EAB",
     colorSix: "#94A1AD",
+    colorSeven: "rgba(113, 135, 156, 0.10)",
     colorTwentyFour: "#71879C",
     colorTwentyFive: "#222",
     colorTwentySix: "#E1E8ED",

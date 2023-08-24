@@ -8,7 +8,7 @@ import { TextInput } from "react-native-paper";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "../../../components/Themed";
 import { COLORS, SIZES } from "../../../constants/Colors";
-import MainButton from "../../../components/MainButton";
+import { MainButton } from "../../../components";
 import { AuthProps, AuthRoutes } from "../../../shared/const/routerAuth";
 
 type NavigationProps = AuthProps<AuthRoutes.SignIn>;

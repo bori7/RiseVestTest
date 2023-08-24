@@ -29,8 +29,8 @@ const AuthStack = (): React.ReactElement => {
       }
     >
       <Auth.Screen
-        component={TellUsMore}
-        name={AuthRoutes.TellUsMore}
+        component={SetPin}
+        name={AuthRoutes.SetPin}
         options={{ headerShown: false }}
       />
 
@@ -70,6 +70,11 @@ const AuthStack = (): React.ReactElement => {
       )}
 
       <Auth.Screen
+        component={TellUsMore}
+        name={AuthRoutes.TellUsMore}
+        options={{ headerShown: false }}
+      />
+      <Auth.Screen
         component={QualityAssets}
         name={AuthRoutes.QualityAssets}
         options={{ headerTitle: "QualityAssets.Header" }}
@@ -87,12 +92,6 @@ const AuthStack = (): React.ReactElement => {
         component={BetterPerformance}
         name={AuthRoutes.BetterPerformance}
         options={{ headerTitle: "BetterPerformance.Header" }}
-      />
-
-      <Auth.Screen
-        component={SetPin}
-        name={AuthRoutes.SetPin}
-        options={{ headerTitle: "SetPin.Header" }}
       />
 
       <Auth.Screen

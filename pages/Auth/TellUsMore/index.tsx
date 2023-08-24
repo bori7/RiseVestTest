@@ -7,9 +7,8 @@ import {
 import { TextInput } from "react-native-paper";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "../../../components/Themed";
-import MainButton from "../../../components/MainButton";
 import { COLORS, SIZES } from "../../../constants/Colors";
-import CountryPicker from "../../../components/CountryPicker";
+import { CountryPicker, MainButton } from "../../../components";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { formatDate } from "../../../shared/helper";

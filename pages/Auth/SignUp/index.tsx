@@ -9,7 +9,7 @@ import CheckBox from "expo-checkbox";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "../../../components/Themed";
 import { AuthProps, AuthRoutes } from "../../../shared/const/routerAuth";
-import MainButton from "../../../components/MainButton";
+import { MainButton } from "../../../components";
 import { COLORS, SIZES } from "../../../constants/Colors";
 
 type NavigationProps = AuthProps<AuthRoutes.SignUp>;

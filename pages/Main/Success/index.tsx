@@ -4,7 +4,7 @@ import React from "react";
 import { Text, View } from "../../../components/Themed";
 import { MainProps, MainRoutes } from "../../../shared/const/routerMain";
 import { COLORS, IMAGES, SIZES } from "../../../constants/Colors";
-import MainButton from "../../../components/MainButton";
+import { MainButton } from "../../../components";
 
 type NavigationProps = MainProps<MainRoutes.Success>;
 
