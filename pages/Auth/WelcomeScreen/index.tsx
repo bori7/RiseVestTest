@@ -1,6 +1,6 @@
 import { Image, StatusBar, StyleSheet } from "react-native";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View } from "../../../components/Themed";
 import { AuthProps, AuthRoutes } from "../../../shared/const/routerAuth";
 import { COLORS, IMAGES, SIZES } from "../../../constants/Colors";
@@ -8,7 +8,12 @@ import RiseLogoSVG from "../../../shared/assets/images/svg/riselogo.svg";
 
 type NavigationProps = AuthProps<AuthRoutes.Welcome>;
 
-const WS: React.FC<NavigationProps> = () => {
+const WS: React.FC<NavigationProps> = ({ navigation }) => {
+  useEffect(() => {
+    setTimeout(() => {
+      navigation?.navigate(AuthRoutes.QualityAssets);
+    }, 3500);
+  }, [navigation]);
   return (
     <View style={styles.main}>
       <StatusBar barStyle="light-content" />

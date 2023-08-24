@@ -1,4 +1,4 @@
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, StatusBar, StyleSheet, TouchableOpacity } from "react-native";
 
 import React from "react";
 import { Text, View } from "../../../components/Themed";
@@ -8,9 +8,10 @@ import { AntDesign, Octicons } from "@expo/vector-icons";
 
 type NavigationProps = AuthProps<AuthRoutes.SuperiorSelection>;
 
-const SS: React.FC<NavigationProps> = () => {
+const SS: React.FC<NavigationProps> = ({ navigation }) => {
   return (
     <View style={styles.main}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.container}>
         <View style={styles.top}>
           <Image
@@ -41,14 +42,24 @@ const SS: React.FC<NavigationProps> = () => {
             </Text>
           </View>
           <View style={styles.swipes}>
-            <TouchableOpacity style={styles.swipe1}>
+            <TouchableOpacity
+              style={styles.swipe1}
+              onPress={() => {
+                navigation?.navigate(AuthRoutes.QualityAssets);
+              }}
+            >
               <AntDesign
                 name="arrowleft"
                 size={15}
                 color={COLORS.Light.colorEleven}
               />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.swipe2}>
+            <TouchableOpacity
+              style={styles.swipe2}
+              onPress={() => {
+                navigation?.navigate(AuthRoutes.BetterPerformance);
+              }}
+            >
               <Text style={styles.txt3}>Next</Text>
               <AntDesign
                 name="arrowright"
@@ -127,7 +138,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   slide: {
-    // width: "100%",
+    backgroundColor: COLORS.Light.colorTen,
   },
   swipes: {
     width: "100%",

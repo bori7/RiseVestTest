@@ -10,8 +10,16 @@ import { Text, View } from "../../../components/Themed";
 import { COLORS, SIZES } from "../../../constants/Colors";
 import { MainButton } from "../../../components";
 import { AuthProps, AuthRoutes } from "../../../shared/const/routerAuth";
+import { MainRoutes } from "../../../shared/const/routerMain";
+import { CommonActions, CompositeScreenProps } from "@react-navigation/native";
+import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
 
-type NavigationProps = AuthProps<AuthRoutes.SignIn>;
+// type NavigationProps = AuthProps<AuthRoutes.SignIn>;
+
+type NavigationProps = CompositeScreenProps<
+  AuthProps<AuthRoutes.SignIn>,
+  RootScreenProps<RootRoutes.Main>
+>;
 
 const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -33,6 +41,22 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
     fieldsFilled();
     // console.log("proceed::", proceed);
   }, [email, password]);
+
+  const resetAction = CommonActions.reset({
+    index: 1,
+    routes: [
+      {
+        name: RootRoutes.Main,
+        params: {
+          screen: MainRoutes.Homepage,
+        },
+      },
+    ],
+  });
+
+  const signIn = () => {
+    navigation.dispatch(resetAction);
+  };
 
   return (
     <View style={styles.main}>
@@ -101,7 +125,9 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
             <View style={styles.btn1Container}>
               <MainButton
                 title={"Sign In"}
-                onPressFunction={() => {}}
+                onPressFunction={() => {
+                  signIn();
+                }}
                 err={false}
                 btnStyle={styles.btn1}
                 disabled={!proceed}

@@ -13,8 +13,14 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { formatDate } from "../../../shared/helper";
 import { AuthProps, AuthRoutes } from "../../../shared/const/routerAuth";
+import { MainProps, MainRoutes } from "../../../shared/const/routerMain";
+import { CompositeScreenProps, CommonActions } from "@react-navigation/native";
+import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
 
-type NavigationProps = AuthProps<AuthRoutes.TellUsMore>;
+type NavigationProps = CompositeScreenProps<
+  AuthProps<AuthRoutes.TellUsMore>,
+  RootScreenProps<RootRoutes.Main>
+>;
 
 const TUM: React.FC<NavigationProps> = ({ navigation }) => {
   const [firstName, setFirstName] = useState<string>("");
@@ -36,13 +42,11 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
   };
 
   const handleConfirm = (selectedDate: Date) => {
-    // console.log('A date has been picked: ', selectedDate.toLocaleDateString());
     const formattedDate = formatDate(selectedDate);
     setSelectedDob(formattedDate);
-    // fieldsFilled2(formattedDate);
-    // setSelectedDob(selectedDate.toLocaleDateString());
+
     hideDatePicker();
-    // fieldsFilled(selectedDate.toLocaleDateString())
+
     setTimeout(() => {}, 2000);
   };
 
@@ -92,6 +96,33 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
     fieldsFilled();
     // console.log("proceed::", proceed);
   }, [firstName, lastName, nickName, msisdn, date]);
+
+  // navigation?.navigate(RootRoutes.Main, {
+  //   screen: MainRoutes.Success,
+  //   params: {
+  //     mainText: "You just created your Rise account",
+  //     subText: "Welcome to Rise, let’s take you home",
+  //     btnText: "Okay",
+  //   },
+  // });
+
+  const resetAction = CommonActions.reset({
+    index: 1,
+    routes: [
+      // { name: "Home" }, // Navigate to Home tab
+      {
+        name: RootRoutes.Main,
+        params: {
+          screen: MainRoutes.Success,
+          params: {
+            mainText: "You just created your Rise account",
+            subText: "Welcome to Rise, let’s take you home",
+            btnText: "Okay",
+          },
+        },
+      },
+    ],
+  });
 
   return (
     <View style={styles.main}>
@@ -251,7 +282,18 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
               <View style={styles.btn1Container}>
                 <MainButton
                   title={"Continue"}
-                  onPressFunction={() => {}}
+                  onPressFunction={() => {
+                    // navigation?.navigate(RootRoutes.Main, {
+                    //   screen: MainRoutes.Success,
+                    //   params: {
+                    //     mainText: "You just created your Rise account",
+                    //     subText: "Welcome to Rise, let’s take you home",
+                    //     btnText: "Okay",
+                    //   },
+                    // });
+
+                    navigation.dispatch(resetAction);
+                  }}
                   err={false}
                   btnStyle={styles.btn1}
                   disabled={!proceed}

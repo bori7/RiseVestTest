@@ -9,7 +9,10 @@ const Main = createStackNavigator<MainParamList>();
 
 const MainStack = (): React.ReactElement => {
   return (
-    <Main.Navigator screenOptions={{ headerShown: false }}>
+    <Main.Navigator
+      initialRouteName={MainRoutes.Homepage}
+      screenOptions={{ headerShown: false }}
+    >
       <Main.Screen component={BottomBar} name={MainRoutes.Homepage} />
       <Main.Screen component={Success} name={MainRoutes.Success} />
     </Main.Navigator>

@@ -28,11 +28,6 @@ const AuthStack = (): React.ReactElement => {
         }
       }
     >
-      <Auth.Screen
-        component={BetterPerformance}
-        name={AuthRoutes.BetterPerformance}
-        options={{ headerShown: false }}
-      />
       {/* {!!userData ? ( */}
       {false ? (
         <>
@@ -78,6 +73,11 @@ const AuthStack = (): React.ReactElement => {
       <Auth.Screen
         component={SuperiorSelection}
         name={AuthRoutes.SuperiorSelection}
+        options={{ headerShown: false }}
+      />
+      <Auth.Screen
+        component={BetterPerformance}
+        name={AuthRoutes.BetterPerformance}
         options={{ headerShown: false }}
       />
 

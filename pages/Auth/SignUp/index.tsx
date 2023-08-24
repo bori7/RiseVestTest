@@ -61,7 +61,7 @@ const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
       !oneUpper ||
       !special ||
       !passwordLength ||
-      !isStrong ||
+      // !isStrong ||
       !validEmail ||
       !password
     ) {
@@ -73,7 +73,7 @@ const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
     oneUpper,
     special,
     passwordLength,
-    isStrong,
+    // isStrong,
     validEmail,
     password,
     email,
@@ -192,7 +192,9 @@ const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
               <View style={styles.btn1Container}>
                 <MainButton
                   title={"Sign Up"}
-                  onPressFunction={() => {}}
+                  onPressFunction={() => {
+                    navigation?.navigate(AuthRoutes.TellUsMore);
+                  }}
                   err={false}
                   btnStyle={styles.btn1}
                   disabled={!proceed}

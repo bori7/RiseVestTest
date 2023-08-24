@@ -5,6 +5,8 @@ import { Text, View } from "../../../components/Themed";
 import { MainProps, MainRoutes } from "../../../shared/const/routerMain";
 import { COLORS, IMAGES, SIZES } from "../../../constants/Colors";
 import { MainButton } from "../../../components";
+// import { CompositeScreenProps } from "@react-navigation/native";
+import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
 
 type NavigationProps = MainProps<MainRoutes.Success>;
 
@@ -16,11 +18,9 @@ const Success: React.FC<NavigationProps> = ({ navigation, route }) => {
         <View style={styles.top}>
           <View style={styles.topContent}>
             <Image source={IMAGES.SuccessTick} style={styles.image} />
-            <Text style={styles.txt1}>
-              {params?.mainText || "You just created your Rise account"}
-            </Text>
+            <Text style={styles.txt1}>{params?.mainText || "Sucesss"}</Text>
             <Text style={styles.txt2}>
-              {params?.subText || "Welcome to Rise, let’s take you home"}
+              {params?.subText || "Click the button below to proceed"}
             </Text>
           </View>
         </View>
@@ -28,7 +28,9 @@ const Success: React.FC<NavigationProps> = ({ navigation, route }) => {
           <View style={styles.btn1Container}>
             <MainButton
               title={params?.btnText || "Okay"}
-              onPressFunction={() => {}}
+              onPressFunction={() => {
+                navigation.replace(MainRoutes.Homepage);
+              }}
               err={false}
               btnStyle={styles.btn1}
             />

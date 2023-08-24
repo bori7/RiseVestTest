@@ -1,4 +1,4 @@
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, StatusBar, StyleSheet, TouchableOpacity } from "react-native";
 
 import React from "react";
 import { Text, View } from "../../../components/Themed";
@@ -9,9 +9,10 @@ import { MainButton } from "../../../components";
 
 type NavigationProps = AuthProps<AuthRoutes.BetterPerformance>;
 
-const BP: React.FC<NavigationProps> = () => {
+const BP: React.FC<NavigationProps> = ({ navigation }) => {
   return (
     <View style={styles.main}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.container}>
         <View style={styles.top}>
           <Image
@@ -45,15 +46,20 @@ const BP: React.FC<NavigationProps> = () => {
             <View style={styles.btn1Container}>
               <MainButton
                 title={"Sign Up"}
-                onPressFunction={() => {}}
+                onPressFunction={() => {
+                  navigation?.navigate(AuthRoutes.SignUp);
+                }}
                 err={false}
                 btnStyle={styles.btn1}
+                textStyle={styles.btn1text}
               />
             </View>
             <View style={styles.btn2Container}>
               <MainButton
                 title={"Sign In"}
-                onPressFunction={() => {}}
+                onPressFunction={() => {
+                  navigation?.navigate(AuthRoutes.SignIn);
+                }}
                 err={false}
                 btnStyle={styles.btn2}
                 textStyle={styles.btn2text}
@@ -130,7 +136,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   slide: {
-    // width: "100%",
+    backgroundColor: COLORS.Light.colorTwelve,
   },
   swipes: {
     width: "100%",
@@ -142,6 +148,10 @@ const styles = StyleSheet.create({
   btn1: {
     borderRadius: 5,
   },
+  btn1text: {
+    // color: COLORS.Light.colorThirteen,
+    fontSize: SIZES.sizeSix,
+  },
   btn2Container: { marginVertical: 5 },
   btn2: {
     borderRadius: 5,
@@ -149,5 +159,6 @@ const styles = StyleSheet.create({
   },
   btn2text: {
     color: COLORS.Light.colorThirteen,
+    fontSize: SIZES.sizeSix,
   },
 });

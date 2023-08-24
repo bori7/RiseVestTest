@@ -10,7 +10,7 @@ import {
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootParamList } from "./shared/const/routerRoot";
-import { StyleProp, ViewStyle } from "react-native";
+import { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 declare global {
   namespace ReactNavigation {
@@ -47,7 +47,7 @@ export interface MainButtonContainer {
   disabled?: boolean;
   // whiteStyling?: boolean,
   btnStyle?: StyleProp<ViewStyle>;
-  textStyle?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
   onPressFunction: any;
   err?: boolean;
 }

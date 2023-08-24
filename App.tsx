@@ -7,15 +7,20 @@ import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import { store } from "./store";
 import { ToastProvider } from "react-native-toast-notifications";
-import React from "react";
+import React, { useEffect } from "react";
 import CustomToast from "./shared/components/CustomToast";
 import InactivityWrapper from "./shared/components/InactivityWrapper";
 import Wrapper from "./shared/components/Wrapper";
 import { Provider as PaperProvider } from "react-native-paper";
+import SplashScreen from "react-native-splash-screen";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+
+  // useEffect(() => {
+  //   SplashScreen.hide();
+  // }, []);
 
   if (!isLoadingComplete) {
     return null;
