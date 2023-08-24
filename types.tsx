@@ -47,6 +47,7 @@ export interface MainButtonContainer {
   disabled?: boolean;
   // whiteStyling?: boolean,
   btnStyle?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<ViewStyle>;
   onPressFunction: any;
   err?: boolean;
 }

@@ -52,7 +52,7 @@ const SetPin: React.FC<NavigationProps> = ({ navigation }) => {
             />
           </View>
           <View
-            style={[styles.keypad, { marginTop: isCodeReady ? "0%" : "10%" }]}
+            style={[styles.keypad, { marginTop: isCodeReady ? "2%" : "10%" }]}
           >
             <KeyPad
               maximumLength={maximumCodeLength}

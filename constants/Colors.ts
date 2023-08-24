@@ -28,6 +28,12 @@ export const COLORS = {
     colorFive: "#8B9EAB",
     colorSix: "#94A1AD",
     colorSeven: "rgba(113, 135, 156, 0.10)",
+    colorEight: "#FEFAF7",
+    colorNine: "#FE7122",
+    colorTen: "#FDF4F9",
+    colorEleven: "#B80074",
+    colorTwelve: "#F6FFFE",
+    colorThirteen: "#0898A0",
     colorTwentyFour: "#71879C",
     colorTwentyFive: "#222",
     colorTwentySix: "#E1E8ED",
@@ -42,8 +48,10 @@ export const SIZES = {
   sizeThree: 10,
   sizeFour: 11,
   sizeFive: 12,
+  sizeFiveC: 14,
   sizeSix: 15,
   sizeSeven: 18,
+  sizeSevenB: 19,
   sizeEight: 20,
   sizeNine: 25,
 };
@@ -80,6 +88,9 @@ export const IMAGES = {
   SuccessTick: require("../shared/assets/images/png/suucess_tick.png"),
   SwHistory: require("../shared/assets/images/svg/sw_history.svg"),
   TurnOn: require("../shared/assets/images/svg/turn_on.svg"),
+
+  RiseLogo: require("../shared/assets/images/png/riselogo.png"),
+  RiseLogoSVG: require("../shared/assets/images/svg/riselogo.svg"),
 
   WalletIcon: require("../shared/assets/images/svg/wallet_icon.svg"),
 };

@@ -9,6 +9,7 @@ const MainButton: React.FC<MainButtonContainer> = ({
   onPressFunction,
   err = false,
   btnStyle = {},
+  textStyle = {},
 }) => {
   return (
     <TouchableOpacity
@@ -32,7 +33,7 @@ const MainButton: React.FC<MainButtonContainer> = ({
       ]}
       disabled={disabled}
     >
-      <Text style={styles.textStyle}>{title}</Text>
+      <Text style={[styles.textStyle, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
 };

@@ -29,13 +29,12 @@ const AuthStack = (): React.ReactElement => {
       }
     >
       <Auth.Screen
-        component={SetPin}
-        name={AuthRoutes.SetPin}
+        component={BetterPerformance}
+        name={AuthRoutes.BetterPerformance}
         options={{ headerShown: false }}
       />
-
       {/* {!!userData ? ( */}
-      {true ? (
+      {false ? (
         <>
           <Auth.Screen
             component={SignIn}
@@ -45,10 +44,7 @@ const AuthStack = (): React.ReactElement => {
           <Auth.Screen
             component={WelcomeScreen}
             name={AuthRoutes.Welcome}
-            options={{
-              headerTitle: "Welcome.Header",
-              headerBackTitleVisible: false,
-            }}
+            options={{ headerShown: false }}
           />
         </>
       ) : (
@@ -56,11 +52,9 @@ const AuthStack = (): React.ReactElement => {
           <Auth.Screen
             component={WelcomeScreen}
             name={AuthRoutes.Welcome}
-            options={{
-              headerTitle: "Welcome.Header",
-              headerBackTitleVisible: false,
-            }}
+            options={{ headerShown: false }}
           />
+
           <Auth.Screen
             component={SignIn}
             name={AuthRoutes.SignIn}
@@ -74,29 +68,28 @@ const AuthStack = (): React.ReactElement => {
         name={AuthRoutes.TellUsMore}
         options={{ headerShown: false }}
       />
+
       <Auth.Screen
         component={QualityAssets}
         name={AuthRoutes.QualityAssets}
-        options={{ headerTitle: "QualityAssets.Header" }}
+        options={{ headerShown: false }}
       />
 
       <Auth.Screen
         component={SuperiorSelection}
         name={AuthRoutes.SuperiorSelection}
-        options={{
-          headerTitle: "SuperiorSelection.Header",
-        }}
-      />
-
-      <Auth.Screen
-        component={BetterPerformance}
-        name={AuthRoutes.BetterPerformance}
-        options={{ headerTitle: "BetterPerformance.Header" }}
+        options={{ headerShown: false }}
       />
 
       <Auth.Screen
         component={SignUp}
         name={AuthRoutes.SignUp}
+        options={{ headerShown: false }}
+      />
+
+      <Auth.Screen
+        component={SetPin}
+        name={AuthRoutes.SetPin}
         options={{ headerShown: false }}
       />
     </Auth.Navigator>
