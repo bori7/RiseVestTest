@@ -1,4 +1,9 @@
-import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 
 import React from "react";
 import { Text, View } from "../../../components/Themed";
@@ -9,6 +14,7 @@ import {
   CreatePlanRoutes,
 } from "../../../shared/const/routerCreatePlan";
 import { MainButton } from "../../../components";
+import { LineChart } from "react-native-chart-kit";
 
 type NavigationProps = CreatePlanProps<CreatePlanRoutes.Review>;
 
@@ -50,7 +56,46 @@ const Review: React.FC<NavigationProps> = () => {
         contentContainerStyle={styles.scrollContent}
         style={styles.scroll}
       >
-        <View style={styles.chart}></View>
+        <LineChart
+          data={{
+            labels: ["2034", "2035", "2036", "2037"],
+            datasets: [
+              {
+                data: [5800, 6703, 10803, 20803],
+                color: () => COLORS.Light.colorSix,
+                strokeWidth: 2,
+              },
+              {
+                data: [20803, 25674, 36789, 50400],
+                color: () => COLORS.Light.colorOne,
+              },
+            ],
+          }}
+          width={Dimensions.get("window").width}
+          height={230}
+          yAxisLabel={""}
+          chartConfig={{
+            // backgroundColor: "#1cc910",
+            backgroundGradientFrom: COLORS.Light.background,
+            backgroundGradientTo: COLORS.Light.background,
+            decimalPlaces: 0,
+            color: (opacity = 255) => `rgba(0, 0, 0, ${opacity})`,
+            labelColor: (opacity = 1) => COLORS.Light.colorTwentyFour,
+            style: {
+              // borderRadius: 16,
+            },
+            propsForDots: {
+              // r: "6",
+              // strokeWidth: "2",
+              // stroke: "#ffa726",
+            },
+          }}
+          bezier
+          style={styles.chart}
+          withVerticalLines={false}
+          withOuterLines={false}
+        />
+
         <View style={styles.containerB}>
           <View style={styles.bR1}>
             <Text style={styles.bR1t1}>Estimated monthly investment</Text>
@@ -205,9 +250,9 @@ const styles = StyleSheet.create({
   },
   chart: {
     marginTop: 35,
-    height: 250,
-    borderWidth: 1,
-    width: "100%",
+    // height: 250,
+    // borderWidth: 1,
+    // width: "100%",
     marginBottom: 20,
   },
   containerB: {
