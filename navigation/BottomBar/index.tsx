@@ -17,6 +17,7 @@ import {
   MaterialCommunityIcons,
   Octicons,
 } from "@expo/vector-icons";
+import { Badge } from "../../components";
 
 const Tab = createBottomTabNavigator();
 
@@ -57,7 +58,19 @@ const TAB_OPTIONS: TabOptions = {
     //   />
     // ),
     icon: ({ color }: { color: string }) => {
-      return <Feed fill={color} />;
+      return (
+        <>
+          <Feed fill={color} />
+          <Badge
+            badgeSize={24}
+            corner={8}
+            text={"9+"}
+            textSize={14}
+            bgColor={COLORS.Light.colorFourteen}
+            textColor={COLORS.Light.background}
+          />
+        </>
+      );
     },
     component: Homepage as React.FC,
   },

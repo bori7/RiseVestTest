@@ -19,7 +19,7 @@ const WS: React.FC<NavigationProps> = ({ navigation }) => {
       <StatusBar barStyle="light-content" />
       <View style={styles.container}>
         <View style={styles.top}>
-          <RiseLogoSVG />
+          <RiseLogoSVG fill={COLORS.Light.background} />
           <Text style={styles.txt1}>
             {"Dollar investments that help you grow"}
           </Text>
