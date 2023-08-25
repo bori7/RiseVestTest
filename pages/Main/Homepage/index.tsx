@@ -150,14 +150,14 @@ const HomePage: React.FC<NavigationProps> = () => {
                 style={styles.planStyle}
                 contentContainerStyle={styles.plansContentStyle}
               >
-                <TouchableOpacity style={styles.plan}>
+                <View style={styles.plan}>
                   <TouchableOpacity style={styles.planAddIcon}>
                     <Text style={styles.planAddBtn}>+</Text>
                   </TouchableOpacity>
                   <Text style={styles.planAddText}>
                     Create an investment plan
                   </Text>
-                </TouchableOpacity>
+                </View>
                 {planList?.map((_, index) => (
                   <TouchableOpacity key={`#${index}`}>
                     <ImageBackground
