@@ -18,7 +18,7 @@ export type CreatePlanParamList = {
   [CreatePlanRoutes.PlanDetails]: undefined;
 };
 
-export type SettingsScreenProps<RouteName extends CreatePlanRoutes> =
+export type CreatePlanProps<RouteName extends CreatePlanRoutes> =
   StackScreenProps<CreatePlanParamList, RouteName>;
 
 export type SettingsNavigationProps = StackNavigationProp<CreatePlanParamList>;

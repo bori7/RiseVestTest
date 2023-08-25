@@ -79,7 +79,7 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
   };
 
   const fieldsFilled = () => {
-    let varList = [firstName, lastName, nickName, msisdn, date];
+    let varList = [firstName, lastName, nickName, msisdn, selectedDob];
 
     for (let v of varList) {
       if (!(v !== "" && v !== " ")) {
@@ -95,7 +95,7 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
     // console.log("password::", password);
     fieldsFilled();
     // console.log("proceed::", proceed);
-  }, [firstName, lastName, nickName, msisdn, date]);
+  }, [firstName, lastName, nickName, msisdn, selectedDob]);
 
   // navigation?.navigate(RootRoutes.Main, {
   //   screen: MainRoutes.Success,
@@ -237,7 +237,7 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
                     autoCapitalize="none"
                     right={
                       <TextInput.Icon
-                        icon={"calendar"}
+                        icon={"calendar-month"}
                         color={COLORS.Light.colorOne}
                         onPress={showDatePickerAndroid}
                       />
@@ -259,7 +259,7 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
                     autoCapitalize="none"
                     right={
                       <TextInput.Icon
-                        icon={"calendar"}
+                        icon={"calendar-month"}
                         color={COLORS.Light.colorOne}
                         onPress={showDatePickerIOS}
                       />

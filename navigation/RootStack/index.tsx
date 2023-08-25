@@ -11,7 +11,7 @@ const RootStack = createStackNavigator<RootParamList>();
 const RootStackApp = (): React.ReactElement => {
   return (
     <RootStack.Navigator
-      initialRouteName={RootRoutes.Auth}
+      initialRouteName={RootRoutes.CreatePlan}
       screenOptions={{ headerShown: false }}
     >
       <RootStack.Screen component={AuthStack} name={RootRoutes.Auth} />

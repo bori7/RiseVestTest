@@ -22,10 +22,10 @@ type NavigationProps = CompositeScreenProps<
 >;
 
 const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [proceed, setProceed] = useState(false);
-  const [hidePassword, setHidePassword] = useState(true);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [proceed, setProceed] = useState<boolean>(false);
+  const [hidePassword, setHidePassword] = useState<boolean>(true);
 
   const fieldsFilled = () => {
     if (email !== "" && email !== " " && password !== "" && password !== " ") {

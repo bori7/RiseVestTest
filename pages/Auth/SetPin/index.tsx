@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 import React, { useEffect, useState } from "react";
 import { Text, View } from "../../../components/Themed";
@@ -29,13 +29,13 @@ const SetPin: React.FC<NavigationProps> = ({ navigation }) => {
     <View style={styles.main}>
       <View style={styles.container}>
         <View style={styles.top}>
-          <View style={styles.image}>
+          <TouchableOpacity style={styles.image}>
             <Ionicons
               name="arrow-back-sharp"
               size={24}
               color={COLORS.Light.colorOne}
             />
-          </View>
+          </TouchableOpacity>
 
           <Text style={styles.txt1}>
             {isCodeReady ? "Confirm 6-digit PIN" : "Create a 6-digit PIN"}

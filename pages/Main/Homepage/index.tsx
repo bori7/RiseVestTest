@@ -137,11 +137,13 @@ const HomePage: React.FC<NavigationProps> = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.sr2}>
-              <Text style={styles.sr2t1}>
-                Start your investment journey by creating a plan
-              </Text>
-            </View>
+            {!planList?.length && (
+              <View style={styles.sr2}>
+                <Text style={styles.sr2t1}>
+                  Start your investment journey by creating a plan
+                </Text>
+              </View>
+            )}
             <View style={styles.sr3}>
               <ScrollView
                 horizontal={true}
@@ -255,6 +257,7 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 10,
     backgroundColor: "transparent",
+    marginBottom: 20,
   },
   scrollContent: {
     // borderWidth: 1,
@@ -262,7 +265,7 @@ const styles = StyleSheet.create({
     // height: "500%",
     alignItems: "center",
     backgroundColor: "transparent",
-    marginBottom: 20,
+    // marginBottom: 20,
     paddingVertical: 5,
   },
   sr1: {

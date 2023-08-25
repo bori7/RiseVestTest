@@ -12,7 +12,7 @@ const WS: React.FC<NavigationProps> = ({ navigation }) => {
   useEffect(() => {
     setTimeout(() => {
       navigation?.navigate(AuthRoutes.QualityAssets);
-    }, 3500);
+    }, 4500);
   }, [navigation]);
   return (
     <View style={styles.main}>
