@@ -31,10 +31,10 @@ const HomePage: React.FC<NavigationProps> = () => {
               <Text style={styles.r1t2}>Deborah</Text>
             </View>
             <View style={styles.r1c2}>
-              <View style={styles.r1c2v1}>
+              <TouchableOpacity style={styles.r1c2v1}>
                 <Text style={styles.r1t3}>Earn 3% bonus</Text>
-              </View>
-              <View style={styles.r1c2v2}>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.r1c2v2}>
                 <BellButton
                   fill={COLORS.Light.colorOne}
                   height={30}
@@ -48,17 +48,19 @@ const HomePage: React.FC<NavigationProps> = () => {
                   bgColor={COLORS.Light.colorFourteen}
                   textColor={COLORS.Light.background}
                 />
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           <ImageBackground style={styles.r2}>
             <View style={styles.r2r1}>
               <Text style={styles.r2t1}>Total Balance</Text>
-              <Ionicons
-                name="ios-eye-off"
-                size={14}
-                color={COLORS.Light.colorOne}
-              />
+              <TouchableOpacity>
+                <Ionicons
+                  name="ios-eye-off"
+                  size={14}
+                  color={COLORS.Light.colorOne}
+                />
+              </TouchableOpacity>
             </View>
             <View style={styles.r2r2}>
               <Text style={styles.r2t2}>$0.00</Text>
@@ -71,11 +73,13 @@ const HomePage: React.FC<NavigationProps> = () => {
                 color={COLORS.Light.colorFifteen}
               />
               <Text style={styles.r2t4}>0.00%</Text>
-              <AntDesign
-                name="right"
-                size={14}
-                color={COLORS.Light.colorTwentyFive}
-              />
+              <TouchableOpacity>
+                <AntDesign
+                  name="right"
+                  size={14}
+                  color={COLORS.Light.colorTwentyFive}
+                />
+              </TouchableOpacity>
             </View>
 
             <View style={styles.r2r4}>
@@ -94,10 +98,10 @@ const HomePage: React.FC<NavigationProps> = () => {
               ))}
             </View>
           </ImageBackground>
-          <View style={styles.r3}>
+          <TouchableOpacity style={styles.r3}>
             <Text style={styles.r3t1}>+</Text>
             <Text style={styles.r3t2}>Add money</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.scrollContainer}>
           <ScrollView
@@ -146,24 +150,25 @@ const HomePage: React.FC<NavigationProps> = () => {
                 style={styles.planStyle}
                 contentContainerStyle={styles.plansContentStyle}
               >
-                <View style={styles.plan}>
-                  <View style={styles.planAddIcon}>
+                <TouchableOpacity style={styles.plan}>
+                  <TouchableOpacity style={styles.planAddIcon}>
                     <Text style={styles.planAddBtn}>+</Text>
-                  </View>
+                  </TouchableOpacity>
                   <Text style={styles.planAddText}>
                     Create an investment plan
                   </Text>
-                </View>
+                </TouchableOpacity>
                 {planList?.map((_, index) => (
-                  <ImageBackground
-                    key={`#${index}`}
-                    style={styles.planItem}
-                    source={IMAGES.BuildWealth}
-                  >
-                    <Text style={styles.planText}>Build Wealth</Text>
-                    <Text style={styles.planText}>$188.25</Text>
-                    <Text style={styles.planText}>Mixed assets</Text>
-                  </ImageBackground>
+                  <TouchableOpacity key={`#${index}`}>
+                    <ImageBackground
+                      style={styles.planItem}
+                      source={IMAGES.BuildWealth}
+                    >
+                      <Text style={styles.planText}>Build Wealth</Text>
+                      <Text style={styles.planText}>$188.25</Text>
+                      <Text style={styles.planText}>Mixed assets</Text>
+                    </ImageBackground>
+                  </TouchableOpacity>
                 ))}
               </ScrollView>
             </View>
