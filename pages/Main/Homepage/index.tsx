@@ -4,6 +4,7 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
 
 import React from "react";
@@ -18,7 +19,7 @@ import { MainProps, MainRoutes } from "../../../shared/const/routerMain";
 type NavigationProps = MainProps<MainRoutes.Homepage>;
 
 const HomePage: React.FC<NavigationProps> = () => {
-  const planList = [1, 2];
+  const planList: number[] = [1, 2];
   return (
     <View style={styles.main}>
       <StatusBar barStyle="dark-content" />
@@ -108,27 +109,29 @@ const HomePage: React.FC<NavigationProps> = () => {
               <Text style={styles.sr1t1}>
                 {!planList?.length ? "Create a plan" : "Your plans"}
               </Text>
-              <Text
-                style={[
-                  styles.sr1t2,
-                  {
-                    color: !planList?.length
-                      ? COLORS.Light.colorSix
-                      : COLORS.Light.colorOne,
-                  },
-                ]}
-              >
-                View all plans{" "}
-                <AntDesign
-                  name="right"
-                  size={15}
-                  color={
-                    !planList?.length
-                      ? COLORS.Light.colorSix
-                      : COLORS.Light.colorOne
-                  }
-                />
-              </Text>
+              <TouchableOpacity>
+                <Text
+                  style={[
+                    styles.sr1t2,
+                    {
+                      color: !planList?.length
+                        ? COLORS.Light.colorSix
+                        : COLORS.Light.colorOne,
+                    },
+                  ]}
+                >
+                  View all plans{" "}
+                  <AntDesign
+                    name="right"
+                    size={15}
+                    color={
+                      !planList?.length
+                        ? COLORS.Light.colorSix
+                        : COLORS.Light.colorOne
+                    }
+                  />
+                </Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.sr2}>
               <Text style={styles.sr2t1}>
@@ -164,16 +167,44 @@ const HomePage: React.FC<NavigationProps> = () => {
                 ))}
               </ScrollView>
             </View>
-            <View style={styles.sr4}></View>
-            <View style={styles.sr5}></View>
+            <View style={styles.sr4}>
+              <View style={styles.sr4a}>
+                <TouchableOpacity style={styles.sr4a1}>
+                  <Text style={styles.ht1}>?</Text>
+                </TouchableOpacity>
+                <Text style={styles.ht2}>Need help? </Text>
+              </View>
+              <TouchableOpacity style={styles.sr4b}>
+                <Text style={styles.ht3}>Contact us</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.sr5}>
+              <View style={styles.sr5a}>
+                <Text style={styles.sr5at1}>TODAY’S QUOTE</Text>
+                <View style={styles.sr5ar1}></View>
+                <Text style={styles.sr5at2}>
+                  We have no intention of rotating capital out of strong
+                  multi-year investments because they’ve recently done well or
+                  because ‘growth’ has out performed ‘value’.
+                </Text>
+                <View style={styles.sr5ar2}>
+                  <Text style={styles.sr5at3}>Carl Sagan</Text>
+                  <TouchableOpacity style={styles.sr5ar3}>
+                    {/* <Text style={styles.sr5at4}>0</Text> */}
+                    <Feather
+                      name="share-2"
+                      size={28}
+                      color={COLORS.Light.background}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
             <View style={styles.bottomLogo}>
               <RiseLogoSVG fill={COLORS.Light.colorSeven} height={30} />
             </View>
           </ScrollView>
         </View>
-        {/* <View style={styles.bottom}>
-          <RiseLogoSVG fill={COLORS.Light.colorSeven} height={30} />
-        </View> */}
       </ImageBackground>
     </View>
   );
@@ -326,16 +357,111 @@ const styles = StyleSheet.create({
   },
   sr4: {
     width: "100%",
-    borderWidth: 1,
-    marginVertical: 5,
-    height: 50,
+    // borderWidth: 1,
+    marginVertical: 10,
+    padding: 10,
+    borderRadius: 15,
+    shadowColor: COLORS.Light.colorTwentyFive,
+    shadowOffset: {
+      width: 4,
+      height: 5,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 10,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  sr4a: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    // borderWidth: 1,
+  },
+  sr4a1: {
+    backgroundColor: COLORS.Light.colorSeven,
+    marginHorizontal: 10,
+    paddingHorizontal: 10,
+    borderRadius: 550,
+  },
+  sr4b: {
+    backgroundColor: COLORS.Light.colorOne,
+    paddingVertical: 14,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+  },
+  ht1: {
+    color: COLORS.Light.colorOne,
+    fontSize: SIZES.sizeNine,
+    fontWeight: "300",
+  },
+  ht2: {
+    fontSize: SIZES.sizeSeven,
+    fontWeight: "300",
+  },
+  ht3: {
+    color: COLORS.Light.background,
+    fontWeight: "500",
+    fontSize: SIZES.sizeSixB,
   },
   sr5: {
     width: "100%",
-    borderWidth: 1,
-    marginVertical: 5,
-    backgroundColor: "transparent",
-    height: 50,
+    borderWidth: 4,
+    marginTop: 40,
+    borderColor: COLORS.Light.colorSeven,
+    borderRadius: 18,
+  },
+  sr5a: {
+    width: "100%",
+    borderWidth: 3,
+    borderColor: COLORS.Light.colorSeventeen,
+    backgroundColor: COLORS.Light.colorOne,
+    borderRadius: 15,
+    padding: 20,
+  },
+  sr5ar1: {
+    width: "15%",
+    borderTopWidth: 3,
+    borderTopColor: COLORS.Light.background,
+    marginBottom: 22,
+  },
+  sr5ar2: {
+    backgroundColor: COLORS.Light.colorOne,
+    borderRadius: 15,
+    width: "100%",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    marginBottom: 10,
+    alignItems: "center",
+  },
+  sr5ar3: {
+    backgroundColor: COLORS.Light.colorSeventeen,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderRadius: 23,
+  },
+  sr5at1: {
+    color: COLORS.Light.background,
+    fontWeight: "600",
+    fontSize: SIZES.sizeSixB,
+    marginBottom: 20,
+  },
+  sr5at2: {
+    color: COLORS.Light.background,
+    fontWeight: "400",
+    fontSize: SIZES.sizeSixB,
+    marginBottom: 25,
+  },
+  sr5at3: {
+    color: COLORS.Light.background,
+    fontWeight: "700",
+    fontSize: SIZES.sizeSixB,
+  },
+  sr5at4: {
+    color: COLORS.Light.background,
+    fontWeight: "700",
+    fontSize: SIZES.sizeSeven,
   },
   bottom: {
     // borderWidth: 1,
