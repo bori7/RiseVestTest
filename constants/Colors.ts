@@ -41,6 +41,7 @@ export const COLORS = {
     colorEighteen: "rgba(0, 0, 0, 0.40)",
     colorNineteen: "rgba(76, 217, 100, 0.15)",
     colorTwenty: "rgba(235, 87, 87, 0.15)",
+    colorTwentyOne: "rgba(0, 0, 0, 0.5)",
     colorTwentyFour: "#71879C",
     colorTwentyFive: "#222",
     colorTwentySix: "#E1E8ED",

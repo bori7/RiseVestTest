@@ -12,7 +12,7 @@ export type FundWalletParamList = {
   [FundWalletRoutes.SelectBank]: undefined;
 };
 
-export type SettingsScreenProps<RouteName extends FundWalletRoutes> =
+export type FundWalletProps<RouteName extends FundWalletRoutes> =
   StackScreenProps<FundWalletParamList, RouteName>;
 
 export type SettingsNavigationProps = StackNavigationProp<FundWalletParamList>;
