@@ -73,7 +73,7 @@ const Review: React.FC<NavigationProps> = () => {
           }}
           width={Dimensions.get("window").width}
           height={230}
-          yAxisLabel={""}
+          yAxisLabel={"$"}
           chartConfig={{
             // backgroundColor: "#1cc910",
             backgroundGradientFrom: COLORS.Light.background,

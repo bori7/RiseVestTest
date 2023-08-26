@@ -16,7 +16,7 @@ const Plan = createStackNavigator<CreatePlanParamList>();
 const PlanStack = (): React.ReactElement => {
   return (
     <Plan.Navigator
-      initialRouteName={CreatePlanRoutes.Review}
+      initialRouteName={CreatePlanRoutes.PlanDetails}
       screenOptions={{ headerShown: false }}
     >
       <Plan.Screen
@@ -35,8 +35,8 @@ const PlanStack = (): React.ReactElement => {
         options={{ headerShown: false }}
       />
       <Plan.Screen
-        component={PlanDetails}
-        name={CreatePlanRoutes.PlanDetails}
+        component={TargetDate}
+        name={CreatePlanRoutes.TargetDate}
         options={{ headerShown: false }}
       />
       <Plan.Screen
@@ -44,10 +44,9 @@ const PlanStack = (): React.ReactElement => {
         name={CreatePlanRoutes.Review}
         options={{ headerShown: false }}
       />
-
       <Plan.Screen
-        component={TargetDate}
-        name={CreatePlanRoutes.TargetDate}
+        component={PlanDetails}
+        name={CreatePlanRoutes.PlanDetails}
         options={{ headerShown: false }}
       />
     </Plan.Navigator>
