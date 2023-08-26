@@ -107,9 +107,13 @@ const PlanDetails: React.FC<NavigationProps> = () => {
                 <Text style={styles.r1t2}>$0.00</Text>
                 <View style={styles.r1t3}>
                   <Text style={styles.r1t3a}>~ ₦0.00</Text>
-                  <Text style={styles.r1t3b}>
-                    <AntDesign name="questioncircle" size={12} color="black" />
-                  </Text>
+                  <TouchableOpacity style={styles.r1t3b}>
+                    <AntDesign
+                      name="questioncircle"
+                      size={12}
+                      color={COLORS.Light.colorTwentyFour}
+                    />
+                  </TouchableOpacity>
                 </View>
                 <Text style={styles.r1t4}>Gains</Text>
                 <Text style={styles.r1t5}>+$5,000.43 • +12.4%</Text>
@@ -118,9 +122,9 @@ const PlanDetails: React.FC<NavigationProps> = () => {
                 <Text style={styles.r2t1}>0.01 achieved</Text>
                 <Text style={styles.r2t1}>Target: $20,053.90</Text>
               </View>
-              <View style={styles.r3}>
+              <TouchableOpacity style={styles.r3}>
                 <View style={styles.r3a}></View>
-              </View>
+              </TouchableOpacity>
               <View style={styles.r4}>
                 <View style={styles.r4a}>
                   {/* <View> */}
@@ -368,7 +372,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   r1t3b: {
-    textAlign: "center",
+    // textAlign: "center",
   },
 
   r1t4: {
