@@ -28,7 +28,7 @@ export default function Wrapper({ child }: props) {
       toast?.show(message, {
         type: type === "error" ? "danger" : type,
         placement: "top",
-        duration: 20500,
+        duration: 4500,
         animationType: "slide-in",
         textStyle: {
           fontSize: SIZES.sizeSix,
@@ -107,16 +107,16 @@ export default function Wrapper({ child }: props) {
       });
     }
 
-    Toaster("success", "planMessage", () => {
-      dispatch(
-        updatePlanState({
-          ...planState,
-          planLoading: false,
-          planError: null,
-          planMessage: "",
-        })
-      );
-    });
+    // Toaster("success", "planMessage", () => {
+    //   dispatch(
+    //     updatePlanState({
+    //       ...planState,
+    //       planLoading: false,
+    //       planError: null,
+    //       planMessage: "",
+    //     })
+    //   );
+    // });
   }, [userError, userMessage, planError, planMessage]);
 
   return (

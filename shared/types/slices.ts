@@ -19,10 +19,10 @@ export interface UserDataType {
   total_balance?: string;
   total_returns?: string;
   token?: string;
-
   created_at?: string;
   phone_number?: string;
   date_of_birth?: string;
+  password?: string;
 }
 
 export interface InitialPlanStateType {
@@ -47,4 +47,22 @@ export interface PlanDataType {
 
   maturity_date?: string;
   returns?: string[];
+}
+
+export interface LoginUserRequestType {
+  email_address: string;
+  password: string;
+}
+
+export interface RegistrationResponseType {
+  token?: string;
+  id?: string;
+  email_address?: string;
+
+  first_name?: string;
+  last_name?: string;
+  username?: string;
+
+  total_balance?: string;
+  total_returns?: string;
 }

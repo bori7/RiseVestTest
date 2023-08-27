@@ -5,7 +5,17 @@ import RiseLogoSVG from "../../shared/assets/images/svg/riselogo.svg";
 
 function CustomToast({ toast }: any) {
   return (
-    <View style={styles.toastMain}>
+    <View
+      style={[
+        styles.toastMain,
+        {
+          borderColor:
+            toast.type === "success"
+              ? COLORS.Light.colorOne
+              : COLORS.Light.colorFourteen,
+        },
+      ]}
+    >
       <ImageBackground style={styles.toastContainer} source={IMAGES.HomeBg}>
         <View style={styles.toastBody}>
           <View style={styles.toastImage}>
@@ -36,7 +46,7 @@ const styles = StyleSheet.create({
     width: "95%",
     backgroundColor: COLORS.Light.background,
     borderRadius: 15,
-    // borderWidth: 1,
+    borderWidth: 1,
     marginTop: 5,
   },
 

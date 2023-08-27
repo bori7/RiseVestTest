@@ -13,6 +13,10 @@ import { AuthProps, AuthRoutes } from "../../../shared/const/routerAuth";
 import { MainRoutes } from "../../../shared/const/routerMain";
 import { CommonActions, CompositeScreenProps } from "@react-navigation/native";
 import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
+import { loginUser, updateUserState } from "../../../store/slices/user";
+import { LoginUserRequestType } from "../../../shared/types/slices";
 
 // type NavigationProps = AuthProps<AuthRoutes.SignIn>;
 
@@ -26,9 +30,27 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
   const [password, setPassword] = useState<string>("");
   const [proceed, setProceed] = useState<boolean>(false);
   const [hidePassword, setHidePassword] = useState<boolean>(true);
+  const [validEmail, setValidEmail] = useState<boolean>(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const userState = useSelector((state: RootState) => state.user);
+  const { userLoading, userData, userError } = userState;
 
   const fieldsFilled = () => {
-    if (email !== "" && email !== " " && password !== "" && password !== " ") {
+    if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+      setValidEmail(true);
+    } else {
+      setValidEmail(false);
+    }
+
+    if (
+      email !== "" &&
+      email !== " " &&
+      password !== "" &&
+      password !== " " &&
+      validEmail
+    ) {
       setProceed(true);
     } else {
       setProceed(false);
@@ -55,8 +77,33 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
   });
 
   const signIn = () => {
-    navigation.dispatch(resetAction);
+    dispatch(
+      updateUserState({
+        ...userState,
+        userError: null,
+        userData: {
+          // ...userData,
+          email_address: email,
+          password: password,
+        },
+      })
+    );
+    const request: LoginUserRequestType = {
+      email_address: email,
+      password: password,
+    };
+    dispatch(loginUser(request));
+
+    if (!userLoading && userError == null && userData?.token) {
+      navigation.dispatch(resetAction);
+    }
   };
+
+  useEffect(() => {
+    if (!userLoading && userError == null && userData?.token) {
+      navigation.dispatch(resetAction);
+    }
+  }, [userData]);
 
   return (
     <View style={styles.main}>
@@ -86,7 +133,11 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
                 onBlur={() => fieldsFilled()}
                 selectionColor={COLORS.Light.colorOne}
                 outlineColor={COLORS.Light.colorTwentySix}
-                activeOutlineColor={COLORS.Light.colorOne}
+                activeOutlineColor={
+                  validEmail
+                    ? COLORS.Light.colorOne
+                    : COLORS.Light.colorFourteen
+                }
                 value={email}
                 onChangeText={(val) => {
                   setEmail(val);
@@ -130,7 +181,8 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
                 }}
                 err={false}
                 btnStyle={styles.btn1}
-                disabled={!proceed}
+                disabled={!proceed || userLoading}
+                loading={userLoading}
               />
             </View>
             <View style={styles.btn2Container}>

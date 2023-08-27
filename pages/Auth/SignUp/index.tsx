@@ -15,16 +15,16 @@ import { COLORS, SIZES } from "../../../constants/Colors";
 type NavigationProps = AuthProps<AuthRoutes.SignUp>;
 
 const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [proceed, setProceed] = useState(false);
-  const [hidePassword, setHidePassword] = useState(true);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [proceed, setProceed] = useState<boolean>(false);
+  const [hidePassword, setHidePassword] = useState<boolean>(true);
 
-  const [passwordLength, setPasswordLength] = useState(false);
-  const [special, setSpecial] = useState(false);
-  const [oneUpper, setOneUpper] = useState(false);
-  const [isStrong, setIsStrong] = useState(false);
-  const [validEmail, setValidEmail] = useState(false);
+  const [passwordLength, setPasswordLength] = useState<boolean>(false);
+  const [special, setSpecial] = useState<boolean>(false);
+  const [oneUpper, setOneUpper] = useState<boolean>(false);
+  const [isStrong, setIsStrong] = useState<boolean>(false);
+  const [validEmail, setValidEmail] = useState<boolean>(false);
 
   useEffect(() => {
     if (!/[^a-zA-Z0-9]/g.test(password) && password !== " ") {

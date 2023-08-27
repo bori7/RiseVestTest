@@ -50,6 +50,7 @@ export interface MainButtonContainer {
   textStyle?: StyleProp<TextStyle>;
   onPressFunction: any;
   err?: boolean;
+  loading?: boolean;
 }
 
 export interface CountryPickerContainer {

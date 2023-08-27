@@ -1,5 +1,10 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { COLORS } from "../constants/Colors";
 import { MainButtonContainer } from "../types";
 
@@ -10,6 +15,7 @@ const MainButton: React.FC<MainButtonContainer> = ({
   err = false,
   btnStyle = {},
   textStyle = {},
+  loading = false,
 }) => {
   return (
     <TouchableOpacity
@@ -33,7 +39,11 @@ const MainButton: React.FC<MainButtonContainer> = ({
       ]}
       disabled={disabled}
     >
-      <Text style={[styles.textStyle, textStyle]}>{title}</Text>
+      {loading ? (
+        <ActivityIndicator size="large" color={COLORS.Light.background} />
+      ) : (
+        <Text style={[styles.textStyle, textStyle]}>{title}</Text>
+      )}
     </TouchableOpacity>
   );
 };
