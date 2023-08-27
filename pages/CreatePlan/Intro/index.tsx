@@ -73,11 +73,13 @@ const Intro: React.FC<NavigationProps> = ({ navigation }) => {
           </View>
           <Text style={styles.subHeader}>Reach your goals faster</Text>
 
-          <Image
-            source={IMAGES.CreatePlan}
-            style={styles.centerImage}
-            resizeMode="contain"
-          />
+          <TouchableOpacity>
+            <Image
+              source={IMAGES.CreatePlan}
+              style={styles.centerImage}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
 
           <View style={styles.steps}>
             {stepList?.map((s, idx) => (

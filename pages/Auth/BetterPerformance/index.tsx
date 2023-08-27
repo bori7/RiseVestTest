@@ -15,11 +15,13 @@ const BP: React.FC<NavigationProps> = ({ navigation }) => {
       <StatusBar barStyle="dark-content" />
       <View style={styles.container}>
         <View style={styles.top}>
-          <Image
-            source={IMAGES.BetterPerformanceIcon}
-            style={styles.image}
-            resizeMode="contain"
-          />
+          <TouchableOpacity>
+            <Image
+              source={IMAGES.BetterPerformanceIcon}
+              style={styles.image}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
           <View style={styles.slider}>
             {[1, 2, 3].map((_, idx) => (
               <View key={idx} style={styles.slide}>
