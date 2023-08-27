@@ -16,7 +16,7 @@ const Plan = createStackNavigator<CreatePlanParamList>();
 const PlanStack = (): React.ReactElement => {
   return (
     <Plan.Navigator
-      initialRouteName={CreatePlanRoutes.PlanDetails}
+      initialRouteName={CreatePlanRoutes.Intro}
       screenOptions={{ headerShown: false }}
     >
       <Plan.Screen

@@ -23,7 +23,7 @@ interface Iprops {
   txt3?: string;
 }
 
-const CFP: React.FC<NavigationProps> = () => {
+const CFP: React.FC<NavigationProps> = ({ navigation }) => {
   const plans: Iprops[] = [
     {
       img: IMAGES.PawIcon,
@@ -49,7 +49,12 @@ const CFP: React.FC<NavigationProps> = () => {
       <View style={styles.container}>
         <View style={styles.top}>
           <View style={styles.header}>
-            <TouchableOpacity style={styles.image}>
+            <TouchableOpacity
+              style={styles.image}
+              onPress={() => {
+                navigation.navigate(FundWalletRoutes.FundWallet);
+              }}
+            >
               <Ionicons
                 name="arrow-back-sharp"
                 size={24}
@@ -64,7 +69,13 @@ const CFP: React.FC<NavigationProps> = () => {
 
           <View style={styles.plans}>
             {plans?.map((p, index) => (
-              <TouchableOpacity key={`#${index}`} style={styles.plan}>
+              <TouchableOpacity
+                key={`#${index}`}
+                style={styles.plan}
+                onPress={() => {
+                  navigation.navigate(FundWalletRoutes.SelectBank);
+                }}
+              >
                 <ImageBackground style={styles.planItem} source={p.img}>
                   <View style={styles.pDas}>
                     <View style={styles.pDa}>

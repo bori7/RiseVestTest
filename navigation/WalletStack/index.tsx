@@ -13,7 +13,7 @@ const Wallet = createStackNavigator<FundWalletParamList>();
 const WalletStack = (): React.ReactElement => {
   return (
     <Wallet.Navigator
-      initialRouteName={FundWalletRoutes.SelectBank}
+      initialRouteName={FundWalletRoutes.FundWallet}
       screenOptions={{ headerShown: false }}
     >
       <Wallet.Screen

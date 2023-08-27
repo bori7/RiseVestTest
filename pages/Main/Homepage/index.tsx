@@ -15,10 +15,16 @@ import BellButton from "../../../shared/assets/images/svg/bell.svg";
 import { Badge } from "../../../components";
 import { AntDesign, Feather, Ionicons, Octicons } from "@expo/vector-icons";
 import { MainProps, MainRoutes } from "../../../shared/const/routerMain";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
+import { CreatePlanRoutes } from "../../../shared/const/routerCreatePlan";
 
-type NavigationProps = MainProps<MainRoutes.Homepage>;
+type NavigationProps = CompositeScreenProps<
+  MainProps<MainRoutes.Homepage>,
+  RootScreenProps<RootRoutes.CreatePlan>
+>;
 
-const HomePage: React.FC<NavigationProps> = () => {
+const HomePage: React.FC<NavigationProps> = ({ navigation }) => {
   const planList: number[] = [1, 2];
   return (
     <View style={styles.main}>
@@ -153,7 +159,14 @@ const HomePage: React.FC<NavigationProps> = () => {
                 contentContainerStyle={styles.plansContentStyle}
               >
                 <View style={styles.plan}>
-                  <TouchableOpacity style={styles.planAddIcon}>
+                  <TouchableOpacity
+                    style={styles.planAddIcon}
+                    onPress={() => {
+                      navigation?.navigate(RootRoutes.CreatePlan, {
+                        screen: CreatePlanRoutes.Intro,
+                      });
+                    }}
+                  >
                     <Text style={styles.planAddBtn}>+</Text>
                   </TouchableOpacity>
                   <Text style={styles.planAddText}>
@@ -161,7 +174,14 @@ const HomePage: React.FC<NavigationProps> = () => {
                   </Text>
                 </View>
                 {planList?.map((_, index) => (
-                  <TouchableOpacity key={`#${index}`}>
+                  <TouchableOpacity
+                    key={`#${index}`}
+                    onPress={() => {
+                      navigation?.navigate(RootRoutes.CreatePlan, {
+                        screen: CreatePlanRoutes.PlanDetails,
+                      });
+                    }}
+                  >
                     <ImageBackground
                       style={styles.planItem}
                       source={IMAGES.BuildWealth}

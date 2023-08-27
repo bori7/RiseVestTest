@@ -9,10 +9,16 @@ import {
 } from "../../../shared/const/routerCreatePlan";
 import { EvilIcons, Feather, Ionicons } from "@expo/vector-icons";
 import { MainButton } from "../../../components";
+import { CommonActions, CompositeScreenProps } from "@react-navigation/native";
+import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
+import { MainRoutes } from "../../../shared/const/routerMain";
 
-type NavigationProps = CreatePlanProps<CreatePlanRoutes.Intro>;
+type NavigationProps = CompositeScreenProps<
+  CreatePlanProps<CreatePlanRoutes.Intro>,
+  RootScreenProps<RootRoutes.Main>
+>;
 
-const Intro: React.FC<NavigationProps> = () => {
+const Intro: React.FC<NavigationProps> = ({ navigation }) => {
   const stepList = [
     {
       header: "Give us a few details",
@@ -38,12 +44,29 @@ const Intro: React.FC<NavigationProps> = () => {
       icon: <EvilIcons name="gear" size={24} color={COLORS.Light.colorOne} />,
     },
   ];
+  const resetAction = CommonActions.reset({
+    index: 1,
+    routes: [
+      {
+        name: RootRoutes.Main,
+        params: {
+          screen: MainRoutes.Homepage,
+        },
+      },
+    ],
+  });
+
   return (
     <View style={styles.main}>
       <View style={styles.container}>
         <View style={styles.top}>
           <View style={styles.header}>
-            <TouchableOpacity style={styles.image}>
+            <TouchableOpacity
+              style={styles.image}
+              onPress={() => {
+                navigation.dispatch(resetAction);
+              }}
+            >
               <Feather name="x" size={24} color={COLORS.Light.colorOne} />
             </TouchableOpacity>
             <Text style={styles.headerText}>Create a plan</Text>
@@ -75,7 +98,7 @@ const Intro: React.FC<NavigationProps> = () => {
             <MainButton
               title={"Continue"}
               onPressFunction={() => {
-                // navigation.replace(MainRoutes.Homepage);
+                navigation.navigate(CreatePlanRoutes.GoalName);
               }}
               err={false}
               btnStyle={styles.btn1}

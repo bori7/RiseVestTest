@@ -13,7 +13,7 @@ import { MainButton } from "../../../components";
 
 type NavigationProps = CreatePlanProps<CreatePlanRoutes.GoalName>;
 
-const GoalName: React.FC<NavigationProps> = () => {
+const GoalName: React.FC<NavigationProps> = ({ navigation }) => {
   const [savingFor, setSavingFor] = useState<string>("");
   const [proceed, setProceed] = useState<boolean>(false);
 
@@ -30,7 +30,12 @@ const GoalName: React.FC<NavigationProps> = () => {
       <View style={styles.container}>
         <View style={styles.top}>
           <View style={styles.header}>
-            <TouchableOpacity style={styles.image}>
+            <TouchableOpacity
+              style={styles.image}
+              onPress={() => {
+                navigation.navigate(CreatePlanRoutes.Intro);
+              }}
+            >
               <Ionicons
                 name="arrow-back-sharp"
                 size={24}
@@ -40,9 +45,9 @@ const GoalName: React.FC<NavigationProps> = () => {
             <Text style={styles.headerText}>Goal name</Text>
           </View>
           <Text style={styles.subHeader}>Question 1 of 3</Text>
-          <View style={styles.progressA}>
+          <TouchableOpacity style={styles.progressA}>
             <View style={[styles.progressB, { width: `${33}%` }]}></View>
-          </View>
+          </TouchableOpacity>
           <Text style={styles.subHeader2}>What are you saving for</Text>
 
           <View>
@@ -70,7 +75,9 @@ const GoalName: React.FC<NavigationProps> = () => {
           <View style={styles.btn1Container}>
             <MainButton
               title={"Continue"}
-              onPressFunction={() => {}}
+              onPressFunction={() => {
+                navigation.navigate(CreatePlanRoutes.TargetAmount);
+              }}
               err={false}
               btnStyle={styles.btn1}
               disabled={!proceed}

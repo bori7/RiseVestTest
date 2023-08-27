@@ -15,16 +15,56 @@ import {
 } from "../../../shared/const/routerCreatePlan";
 import { MainButton } from "../../../components";
 import { LineChart } from "react-native-chart-kit";
+import { CommonActions, CompositeScreenProps } from "@react-navigation/native";
+import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
+import { MainRoutes } from "../../../shared/const/routerMain";
 
-type NavigationProps = CreatePlanProps<CreatePlanRoutes.Review>;
+type NavigationProps = CompositeScreenProps<
+  CreatePlanProps<CreatePlanRoutes.Review>,
+  RootScreenProps<RootRoutes.Main>
+>;
 
-const Review: React.FC<NavigationProps> = () => {
+const Review: React.FC<NavigationProps> = ({ navigation }) => {
+  const resetAction = CommonActions.reset({
+    index: 1,
+    routes: [
+      // { name: "Home" }, // Navigate to Home tab
+      {
+        name: RootRoutes.Main,
+        params: {
+          screen: MainRoutes.Success,
+          params: {
+            mainText: "You just created your plan.",
+            subText: "Well done, Deborah",
+            btnText: "View plan",
+            toScreen: RootRoutes.CreatePlan,
+            toSubScreen: CreatePlanRoutes.PlanDetails,
+          },
+        },
+      },
+    ],
+  });
+
+  const resetActionStartOver = CommonActions.reset({
+    index: 0,
+    routes: [
+      {
+        name: CreatePlanRoutes.Intro,
+      },
+    ],
+  });
+
   return (
     <View style={styles.main}>
       <View style={styles.container}>
         <View style={styles.top}>
           <View style={styles.header}>
-            <TouchableOpacity style={styles.image}>
+            <TouchableOpacity
+              style={styles.image}
+              onPress={() => {
+                navigation.navigate(CreatePlanRoutes.TargetDate);
+              }}
+            >
               <Ionicons
                 name="arrow-back-sharp"
                 size={24}
@@ -128,7 +168,7 @@ const Review: React.FC<NavigationProps> = () => {
               <MainButton
                 title={"Agree & Continue"}
                 onPressFunction={() => {
-                  // navigation?.navigate(AuthRoutes.SignUp);
+                  navigation.dispatch(resetAction);
                 }}
                 err={false}
                 btnStyle={styles.btn1}
@@ -139,7 +179,7 @@ const Review: React.FC<NavigationProps> = () => {
               <MainButton
                 title={"Start over"}
                 onPressFunction={() => {
-                  // navigation?.navigate(AuthRoutes.SignIn);
+                  navigation.dispatch(resetActionStartOver);
                 }}
                 err={false}
                 btnStyle={styles.btn2}

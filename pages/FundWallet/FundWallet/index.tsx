@@ -15,8 +15,15 @@ import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../../constants/Colors";
 import { StatusBar } from "expo-status-bar";
 import { MainButton } from "../../../components";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
+import { CreatePlanRoutes } from "../../../shared/const/routerCreatePlan";
 
-type NavigationProps = FundWalletProps<FundWalletRoutes.FundWallet>;
+type NavigationProps = CompositeScreenProps<
+  FundWalletProps<FundWalletRoutes.FundWallet>,
+  RootScreenProps<RootRoutes.CreatePlan>
+>;
+
 interface Iprops {
   icon: string;
   name: string;
@@ -25,7 +32,7 @@ interface Iprops {
   fee?: string;
 }
 
-const FundWallet: React.FC<NavigationProps> = () => {
+const FundWallet: React.FC<NavigationProps> = ({ navigation }) => {
   const channels: Iprops[] = [
     {
       icon: "bank-transfer",
@@ -83,14 +90,27 @@ const FundWallet: React.FC<NavigationProps> = () => {
       <View style={styles.container}>
         <View style={styles.top}>
           <View style={styles.header}>
-            <TouchableOpacity style={styles.image}>
+            <TouchableOpacity
+              style={styles.image}
+              onPress={() => {
+                navigation.navigate(RootRoutes.CreatePlan, {
+                  screen: CreatePlanRoutes.PlanDetails,
+                });
+              }}
+            >
               <Feather name="x" size={24} color={COLORS.Light.colorOne} />
             </TouchableOpacity>
             <Text style={styles.headerText}>Fund Wallet</Text>
           </View>
           <View style={styles.content}>
             {channels?.map((c, idx) => (
-              <View key={idx} style={styles.r}>
+              <TouchableOpacity
+                key={idx}
+                style={styles.r}
+                onPress={() => {
+                  navigation.navigate(FundWalletRoutes.ChooseFromPlans);
+                }}
+              >
                 <TouchableOpacity style={styles.rc1}>
                   <MaterialCommunityIcons
                     name={`${c.icon}`}
@@ -106,7 +126,7 @@ const FundWallet: React.FC<NavigationProps> = () => {
                   <Text style={styles.rc3t1}>{c.rate}</Text>
                   <Text style={styles.rc3t2}>{c.fee}</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
           <Modal

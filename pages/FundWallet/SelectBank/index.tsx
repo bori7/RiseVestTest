@@ -11,7 +11,7 @@ import { COLORS, SIZES } from "../../../constants/Colors";
 
 type NavigationProps = FundWalletProps<FundWalletRoutes.SelectBank>;
 
-const SelectBank: React.FC<NavigationProps> = () => {
+const SelectBank: React.FC<NavigationProps> = ({ navigation }) => {
   const banks = [
     {
       msisdn: "0123456789 • ",
@@ -29,7 +29,12 @@ const SelectBank: React.FC<NavigationProps> = () => {
       <View style={styles.container}>
         <View style={styles.top}>
           <View style={styles.header}>
-            <TouchableOpacity style={styles.image}>
+            <TouchableOpacity
+              style={styles.image}
+              onPress={() => {
+                navigation.navigate(FundWalletRoutes.ChooseFromPlans);
+              }}
+            >
               <Ionicons
                 name="arrow-back-sharp"
                 size={24}
@@ -41,7 +46,7 @@ const SelectBank: React.FC<NavigationProps> = () => {
           <View style={styles.body}>
             <View style={styles.banks}>
               {banks?.map((b, idx) => (
-                <View key={idx} style={styles.bank}>
+                <TouchableOpacity key={idx} style={styles.bank}>
                   <View style={styles.banka}>
                     <Text style={styles.bankt1}>
                       {b.msisdn}
@@ -56,7 +61,7 @@ const SelectBank: React.FC<NavigationProps> = () => {
                       color={COLORS.Light.colorTwentyFour}
                     />
                   </View>
-                </View>
+                </TouchableOpacity>
               ))}
             </View>
           </View>

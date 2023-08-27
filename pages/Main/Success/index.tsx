@@ -7,8 +7,20 @@ import { COLORS, IMAGES, SIZES } from "../../../constants/Colors";
 import { MainButton } from "../../../components";
 // import { CompositeScreenProps } from "@react-navigation/native";
 import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
+import { CompositeScreenProps } from "@react-navigation/native";
 
-type NavigationProps = MainProps<MainRoutes.Success>;
+type NavigationProps = CompositeScreenProps<
+  MainProps<MainRoutes.Success>,
+  | RootScreenProps<RootRoutes.Main>
+  | RootScreenProps<RootRoutes.CreatePlan>
+  | RootScreenProps<RootRoutes.FundWallet>
+  | RootScreenProps<RootRoutes.Auth>
+>;
+
+// type NavigationProps = CompositeScreenProps<
+//   AuthProps<AuthRoutes.TellUsMore>,
+//   RootScreenProps<RootRoutes.Main>
+// >;
 
 const Success: React.FC<NavigationProps> = ({ navigation, route }) => {
   const params = route.params;
@@ -29,7 +41,14 @@ const Success: React.FC<NavigationProps> = ({ navigation, route }) => {
             <MainButton
               title={params?.btnText || "Okay"}
               onPressFunction={() => {
-                navigation.replace(MainRoutes.Homepage);
+                !params?.toSubScreen
+                  ? navigation.replace(params?.toScreen || MainRoutes.Homepage)
+                  : navigation.replace(
+                      params?.toScreen || MainRoutes.Homepage,
+                      {
+                        screen: params?.toSubScreen || MainRoutes.Homepage,
+                      }
+                    );
               }}
               err={false}
               btnStyle={styles.btn1}

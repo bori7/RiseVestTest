@@ -16,7 +16,7 @@ import { formatDate } from "../../../shared/helper";
 
 type NavigationProps = CreatePlanProps<CreatePlanRoutes.TargetDate>;
 
-const TargetDate: React.FC<NavigationProps> = () => {
+const TargetDate: React.FC<NavigationProps> = ({ navigation }) => {
   const [proceed, setProceed] = useState<boolean>(false);
 
   const [selectedDob, setSelectedDob] = useState<string>("");
@@ -82,7 +82,12 @@ const TargetDate: React.FC<NavigationProps> = () => {
       <View style={styles.container}>
         <View style={styles.top}>
           <View style={styles.header}>
-            <TouchableOpacity style={styles.image}>
+            <TouchableOpacity
+              style={styles.image}
+              onPress={() => {
+                navigation.navigate(CreatePlanRoutes.TargetAmount);
+              }}
+            >
               <Ionicons
                 name="arrow-back-sharp"
                 size={24}
@@ -92,9 +97,9 @@ const TargetDate: React.FC<NavigationProps> = () => {
             <Text style={styles.headerText}>Target date</Text>
           </View>
           <Text style={styles.subHeader}>Question 3 of 3</Text>
-          <View style={styles.progressA}>
+          <TouchableOpacity style={styles.progressA}>
             <View style={[styles.progressB, { width: `${100}%` }]}></View>
-          </View>
+          </TouchableOpacity>
           <Text style={styles.subHeader2}>When do you want to withdraw?</Text>
 
           {Platform.OS === "android" ? (
@@ -159,7 +164,9 @@ const TargetDate: React.FC<NavigationProps> = () => {
           <View style={styles.btn1Container}>
             <MainButton
               title={"Continue"}
-              onPressFunction={() => {}}
+              onPressFunction={() => {
+                navigation.navigate(CreatePlanRoutes.Review);
+              }}
               err={false}
               btnStyle={styles.btn1}
               disabled={!proceed}

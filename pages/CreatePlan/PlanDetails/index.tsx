@@ -16,10 +16,17 @@ import {
 import { COLORS, IMAGES, SIZES } from "../../../constants/Colors";
 import { AntDesign, Entypo, Feather, Ionicons } from "@expo/vector-icons";
 import { LineChart } from "react-native-chart-kit";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
+import { Screen } from "react-native-screens";
+import { FundWalletRoutes } from "../../../shared/const/routerFundWallet";
 
-type NavigationProps = CreatePlanProps<CreatePlanRoutes.PlanDetails>;
+type NavigationProps = CompositeScreenProps<
+  CreatePlanProps<CreatePlanRoutes.PlanDetails>,
+  RootScreenProps<RootRoutes.FundWallet> | RootScreenProps<RootRoutes.Main>
+>;
 
-const PlanDetails: React.FC<NavigationProps> = () => {
+const PlanDetails: React.FC<NavigationProps> = ({ navigation }) => {
   const infoList = [
     { title: "Total earnings", value: "$12,000.09" },
     { title: "Current earnings", value: "$12,000.09" },
@@ -71,7 +78,12 @@ const PlanDetails: React.FC<NavigationProps> = () => {
         >
           <View style={styles.headingR}>
             <View style={styles.headingC1}>
-              <TouchableOpacity style={styles.image}>
+              <TouchableOpacity
+                style={styles.image}
+                onPress={() => {
+                  navigation.navigate(RootRoutes.Main);
+                }}
+              >
                 <Ionicons
                   name="arrow-back-sharp"
                   size={24}
@@ -132,7 +144,14 @@ const PlanDetails: React.FC<NavigationProps> = () => {
                   {/* </View> */}
                 </View>
               </View>
-              <TouchableOpacity style={styles.r5}>
+              <TouchableOpacity
+                style={styles.r5}
+                onPress={() => {
+                  navigation.navigate(RootRoutes.FundWallet, {
+                    screen: FundWalletRoutes.FundWallet,
+                  });
+                }}
+              >
                 <Text style={styles.r5t1}>+</Text>
                 <Text style={styles.r5t2}>Fund plan</Text>
               </TouchableOpacity>

@@ -118,6 +118,7 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
             mainText: "You just created your Rise account",
             subText: "Welcome to Rise, let’s take you home",
             btnText: "Okay",
+            toScreen: MainRoutes.Homepage,
           },
         },
       },

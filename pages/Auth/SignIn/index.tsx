@@ -145,7 +145,13 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
           <Text style={{ ...styles.btn2, color: COLORS.Light.colorTwentyFour }}>
             Don't have an account?
           </Text>
-          <Text style={styles.btn2}> Sign up</Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation?.navigate(AuthRoutes.SignUp);
+            }}
+          >
+            <Text style={styles.btn2}> Sign up</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
