@@ -29,7 +29,7 @@ const AuthStack = (): React.ReactElement => {
       }
     >
       {/* {!!userData ? ( */}
-      {false ? (
+      {true ? (
         <>
           <Auth.Screen
             component={SignIn}

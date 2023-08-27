@@ -8,10 +8,10 @@ const initialUserState: InitialUserStateType = {
   userMessage: "",
 };
 export const userSlice = createSlice({
-  name: "sellerSlice",
+  name: "userSlice",
   initialState: initialUserState,
   reducers: {
-    updateData: (state, action: PayloadAction<UserDataType>) => {
+    updateUserData: (state, action: PayloadAction<UserDataType>) => {
       state.userData = action.payload;
     },
     updateUserState: (state, action: PayloadAction<InitialUserStateType>) => {
@@ -29,6 +29,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { updateData, updateUserState, clearUserState } =
+export const { updateUserData, updateUserState, clearUserState } =
   userSlice.actions;
 export default userSlice.reducer;

@@ -22,26 +22,26 @@ export default function App() {
   //   SplashScreen.hide();
   // }, []);
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
-    return (
+  // if (!isLoadingComplete) {
+  //   return null;
+  // } else {
+  return (
+    <ToastProvider
+      offsetTop="6%"
+      swipeEnabled
+      renderToast={(toast) => <CustomToast toast={toast} />}
+    >
       <InactivityWrapper>
         <SafeAreaProvider>
-          <ToastProvider
-            offsetTop="6%"
-            swipeEnabled
-            renderToast={(toast) => <CustomToast toast={toast} />}
-          >
-            <Provider store={store}>
-              <PaperProvider>
-                <Wrapper child={<Navigation colorScheme={colorScheme} />} />
-                <StatusBar />
-              </PaperProvider>
-            </Provider>
-          </ToastProvider>
+          <Provider store={store}>
+            <PaperProvider>
+              <Wrapper child={<Navigation colorScheme={colorScheme} />} />
+              <StatusBar />
+            </PaperProvider>
+          </Provider>
         </SafeAreaProvider>
       </InactivityWrapper>
-    );
-  }
+    </ToastProvider>
+  );
+  // }
 }

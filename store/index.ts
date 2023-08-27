@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import userReducer from "./slices/user";
+import planReducer from "./slices/plan";
 
 const rootReducer = {
   user: userReducer,
+  plan: planReducer,
 };
 
 export const store = configureStore({
