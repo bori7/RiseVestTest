@@ -1,19 +1,38 @@
 import { Image, StatusBar, StyleSheet } from "react-native";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View } from "../../../components/Themed";
 import { AuthProps, AuthRoutes } from "../../../shared/const/routerAuth";
 import { COLORS, IMAGES, SIZES } from "../../../constants/Colors";
 import RiseLogoSVG from "../../../shared/assets/images/svg/riselogo.svg";
+import { AppDispatch, RootState } from "../../../store";
+import { useDispatch, useSelector } from "react-redux";
 
 type NavigationProps = AuthProps<AuthRoutes.Welcome>;
 
 const WS: React.FC<NavigationProps> = ({ navigation }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const userState = useSelector((state: RootState) => state.user);
+  const { userLoading, userData, userError } = userState;
+
+  const [timeoff, setTimeOff] = useState<boolean>(false);
+
   useEffect(() => {
     setTimeout(() => {
-      navigation?.navigate(AuthRoutes.QualityAssets);
+      setTimeOff(true);
     }, 4500);
-  }, [navigation]);
+  }, []);
+
+  useEffect(() => {
+    if (timeoff) {
+      if (userData?.isRiseUserKey) {
+        navigation?.navigate(AuthRoutes.SignIn);
+      } else {
+        navigation?.navigate(AuthRoutes.QualityAssets);
+      }
+    }
+  }, [timeoff, userData?.isRiseUserKey]);
   return (
     <View style={styles.main}>
       <StatusBar barStyle="light-content" />
