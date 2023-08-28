@@ -111,9 +111,10 @@ const FundWallet: React.FC<NavigationProps> = ({ navigation }) => {
             <TouchableOpacity
               style={styles.image}
               onPress={() => {
-                navigation.navigate(RootRoutes.CreatePlan, {
-                  screen: CreatePlanRoutes.PlanDetails,
-                });
+                // navigation.navigate(RootRoutes.CreatePlan, {
+                //   screen: CreatePlanRoutes.PlanDetails,
+                // });
+                navigation.goBack();
               }}
             >
               <Feather name="x" size={24} color={COLORS.Light.colorOne} />

@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import React from "react";
+import React, { useState } from "react";
 import { Text, View } from "../../../components/Themed";
 import { COLORS, IMAGES, SIZES } from "../../../constants/Colors";
 import RiseLogoSVG from "../../../shared/assets/images/svg/riselogo.svg";
@@ -29,6 +29,7 @@ import {
   GetQuotesResponseType,
 } from "../../../shared/types/queries";
 import { getQuotes } from "../../../services/General";
+import { FundWalletRoutes } from "../../../shared/const/routerFundWallet";
 
 type NavigationProps = CompositeScreenProps<
   MainProps<MainRoutes.Homepage>,
@@ -36,6 +37,7 @@ type NavigationProps = CompositeScreenProps<
 >;
 
 const HomePage: React.FC<NavigationProps> = ({ navigation }) => {
+  const [hideMoney, setHideMoney] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
   const userState = useSelector((state: RootState) => state.user);
@@ -99,16 +101,26 @@ const HomePage: React.FC<NavigationProps> = ({ navigation }) => {
           <ImageBackground style={styles.r2}>
             <View style={styles.r2r1}>
               <Text style={styles.r2t1}>Total Balance</Text>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setHideMoney(!hideMoney);
+                }}
+              >
                 <Ionicons
-                  name="ios-eye-off"
+                  name={hideMoney ? "ios-eye" : "ios-eye-off"}
                   size={14}
                   color={COLORS.Light.colorOne}
                 />
               </TouchableOpacity>
             </View>
             <View style={styles.r2r2}>
-              <Text style={styles.r2t2}>$0.00</Text>
+              <Text style={styles.r2t2}>
+                {hideMoney
+                  ? "*****"
+                  : `$${parseFloat(userData?.total_balance || "0.00").toFixed(
+                      2
+                    )}`}
+              </Text>
             </View>
             <View style={styles.r2r3}>
               <Text style={styles.r2t3}>Total Gains </Text>
@@ -117,7 +129,12 @@ const HomePage: React.FC<NavigationProps> = ({ navigation }) => {
                 size={16}
                 color={COLORS.Light.colorFifteen}
               />
-              <Text style={styles.r2t4}>0.00%</Text>
+              <Text style={styles.r2t4}>{`${
+                Math.floor(
+                  parseFloat(userData?.total_returns || "0.00") /
+                    parseFloat(userData?.total_balance || "100.00")
+                ).toFixed(2) || "0.00"
+              }%`}</Text>
               <TouchableOpacity>
                 <AntDesign
                   name="right"
@@ -143,7 +160,14 @@ const HomePage: React.FC<NavigationProps> = ({ navigation }) => {
               ))}
             </View>
           </ImageBackground>
-          <TouchableOpacity style={styles.r3}>
+          <TouchableOpacity
+            style={styles.r3}
+            onPress={() => {
+              navigation.navigate(RootRoutes.FundWallet, {
+                screen: FundWalletRoutes.FundWallet,
+              });
+            }}
+          >
             <Text style={styles.r3t1}>+</Text>
             <Text style={styles.r3t2}>Add money</Text>
           </TouchableOpacity>
