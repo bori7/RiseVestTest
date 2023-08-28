@@ -56,35 +56,35 @@ const FundWallet: React.FC<NavigationProps> = ({ navigation }) => {
       icon: "bank-transfer",
       name: "Naira Bank Transfer",
       time: "Timeline - 15 mins",
-      rate: `Rate - $1 = ₦${rateData?.sell_rate}`,
+      rate: `Rate - $1 = ₦${rateData?.sell_rate || "0.00"}`,
       fee: "Fee - 1.5%",
     },
     {
       icon: "credit-card-outline",
       name: "Naira Debit card",
       time: "Timeline - 15 mins",
-      rate: `Rate - $1 = ₦${rateData?.sell_rate}`,
+      rate: `Rate - $1 = ₦${rateData?.sell_rate || "0.00"}`,
       fee: "Fee - 1.5%",
     },
     {
       icon: "bank-outline",
       name: "Naira Direct Debit",
       time: "Timeline - 15 mins",
-      rate: `Rate - $1 = ₦${rateData?.sell_rate}`,
+      rate: `Rate - $1 = ₦${rateData?.sell_rate || "0.00"}`,
       fee: "Fee - 1.5%",
     },
     {
       icon: "credit-card-plus-outline",
       name: "USD Debit/Credit Card",
       time: "Timeline - 1 business day",
-      rate: `Rate - $1 = ₦${rateData?.sell_rate}`,
+      rate: `Rate - $1 = ₦${rateData?.sell_rate || "0.00"}`,
       fee: "Fee - 0.5%",
     },
     {
       icon: "bitcoin",
       name: "Crypto",
       time: "Timeline - 15 mins",
-      rate: `Rate - $1 = ₦${rateData?.sell_rate}`,
+      rate: `Rate - $1 = ₦${rateData?.sell_rate || "0.00"}`,
       fee: "Fee - 0.1%",
     },
   ];
@@ -178,9 +178,9 @@ const FundWallet: React.FC<NavigationProps> = ({ navigation }) => {
                         We buy US dollars at this rate
                       </Text>
                     </View>
-                    <Text
-                      style={styles.mr2aii}
-                    >{`₦${rateData?.buy_rate}`}</Text>
+                    <Text style={styles.mr2aii}>{`₦${
+                      rateData?.buy_rate || "0.00"
+                    }`}</Text>
                   </View>
                   <View style={styles.mr2a}>
                     <View style={styles.mr2ai}>
@@ -189,9 +189,9 @@ const FundWallet: React.FC<NavigationProps> = ({ navigation }) => {
                         The current value of your investments in Naira
                       </Text>
                     </View>
-                    <Text
-                      style={styles.mr2aii}
-                    >{`₦${rateData?.sell_rate}`}</Text>
+                    <Text style={styles.mr2aii}>{`₦${
+                      rateData?.sell_rate || "0.00"
+                    }`}</Text>
                   </View>
                 </View>
                 <Text style={styles.mr3}>
