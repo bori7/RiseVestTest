@@ -7,11 +7,13 @@ import { COLORS, IMAGES, SIZES } from "../../../constants/Colors";
 import RiseLogoSVG from "../../../shared/assets/images/svg/riselogo.svg";
 import { AppDispatch, RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
+import { secureDelete } from "../../../shared/helper";
+import { IS_RISE_USER_KEY } from "../../../constants/values";
 
 type NavigationProps = AuthProps<AuthRoutes.Welcome>;
 
 const WS: React.FC<NavigationProps> = ({ navigation }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  secureDelete(IS_RISE_USER_KEY);
 
   const userState = useSelector((state: RootState) => state.user);
   const { userLoading, userData, userError } = userState;
@@ -32,7 +34,7 @@ const WS: React.FC<NavigationProps> = ({ navigation }) => {
         navigation?.navigate(AuthRoutes.QualityAssets);
       }
     }
-  }, [timeoff, userData?.isRiseUserKey]);
+  }, [timeoff]);
   return (
     <View style={styles.main}>
       <StatusBar barStyle="light-content" />

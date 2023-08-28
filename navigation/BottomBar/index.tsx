@@ -10,7 +10,7 @@ import Home from "../../shared/assets/images/svg/home_icon.svg";
 import Plans from "../../shared/assets/images/svg/plans_icon.svg";
 import Wallet from "../../shared/assets/images/svg/wallet_icon.svg";
 import Feed from "../../shared/assets/images/svg/feed_icon.svg";
-import Account from "../../shared/assets/images/svg/account_holder.svg";
+// import Account from "../../shared/assets/images/svg/account_holder.svg";
 import {
   Entypo,
   Ionicons,
@@ -77,7 +77,8 @@ const TAB_OPTIONS: TabOptions = {
   Account: {
     label: "Account",
     icon: ({ color }: { color: string }) => {
-      return <Account />;
+      // return <Account />;
+      return <MaterialCommunityIcons name="account" size={30} color={color} />;
     },
     component: Homepage as React.FC,
   },
@@ -92,9 +93,9 @@ const BottomTabNavigator = (): React.ReactElement => {
           <View
             style={[
               styles.containerIcon,
-              focused &&
-                TAB_OPTIONS[name].label === "Account" &&
-                styles.focusIcon,
+              // focused &&
+              //   TAB_OPTIONS[name].label === "Account" &&
+              //   styles.focusIcon,
             ]}
           >
             <CompToRender

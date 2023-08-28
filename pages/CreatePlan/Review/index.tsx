@@ -163,9 +163,9 @@ const Review: React.FC<NavigationProps> = ({ navigation }) => {
             <View style={styles.subHeaderR4}>
               <View style={styles.subHeaderC}>
                 <View style={styles.subHeaderD1}></View>
-                <Text
-                  style={styles.subHeaderC1}
-                >{`Investments • $${projectionData?.total_invested} || "0.00"`}</Text>
+                <Text style={styles.subHeaderC1}>{`Investments • $${
+                  projectionData?.total_invested || "0.00"
+                } `}</Text>
               </View>
               <View style={styles.subHeaderC}>
                 <View style={styles.subHeaderD2}></View>

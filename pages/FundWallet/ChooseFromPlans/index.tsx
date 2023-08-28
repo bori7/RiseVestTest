@@ -1,6 +1,7 @@
 import {
   ImageBackground,
   ImageURISource,
+  Platform,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -88,7 +89,11 @@ const CFP: React.FC<NavigationProps> = ({ navigation }) => {
             <Text style={styles.headerText}>Choose from plans</Text>
           </View>
           <Text style={styles.subHeader}>
-            Tap on any of the plans to select
+            {`${
+              planList?.length
+                ? "Tap on any of the plans to select"
+                : "There no plans to select from"
+            }`}
           </Text>
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -202,12 +207,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   planItem: {
-    height: 210,
+    height: Platform.OS === "android" ? 180 : 210,
     // borderWidth: 1,
-    width: 160,
+    width: Platform.OS === "android" ? 140 : 160,
     // borderRadius: 50,
     justifyContent: "flex-end",
     padding: 10,
+    // resizeMode: "stretch",
   },
   planText: {
     color: COLORS.Light.background,

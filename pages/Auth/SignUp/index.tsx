@@ -93,7 +93,7 @@ const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
         userError: null,
         userData: {
           // ...userData,
-          email_address: email,
+          email_address: email.trim(),
           password: password,
         },
       })

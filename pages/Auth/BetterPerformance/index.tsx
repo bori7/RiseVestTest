@@ -1,4 +1,11 @@
-import { Image, StatusBar, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Image,
+  Platform,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 
 import React from "react";
 import { Text, View } from "../../../components/Themed";
@@ -14,7 +21,12 @@ const BP: React.FC<NavigationProps> = ({ navigation }) => {
     <View style={styles.main}>
       <StatusBar barStyle="dark-content" />
       <View style={styles.container}>
-        <View style={styles.top}>
+        {/* <View style={styles.top}> */}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.top}
+          style={styles.scroll}
+        >
           <TouchableOpacity>
             <Image
               source={IMAGES.BetterPerformanceIcon}
@@ -68,9 +80,10 @@ const BP: React.FC<NavigationProps> = ({ navigation }) => {
               />
             </View>
           </View>
-        </View>
+        </ScrollView>
       </View>
     </View>
+    // </View>
   );
 };
 
@@ -99,7 +112,7 @@ const styles = StyleSheet.create({
   },
   content: {
     // borderWidth: 1,
-    marginVertical: 40,
+    marginVertical: Platform.OS === "android" ? 10 : 40,
     width: "100%",
     backgroundColor: COLORS.Light.colorTwelve,
   },
@@ -142,7 +155,7 @@ const styles = StyleSheet.create({
   },
   swipes: {
     width: "100%",
-    marginTop: 25,
+    marginTop: Platform.OS === "android" ? 0 : 25,
     height: 50,
     backgroundColor: COLORS.Light.colorTwelve,
   },
@@ -162,5 +175,19 @@ const styles = StyleSheet.create({
   btn2text: {
     color: COLORS.Light.colorThirteen,
     fontSize: SIZES.sizeSix,
+  },
+  scroll: {
+    // borderWidth: 1,
+    width: "100%",
+    // marginTop: 10,
+    backgroundColor: "transparent",
+    marginBottom: 20,
+  },
+  scrollContent: {
+    // borderWidth: 1,
+    // width: "100%",
+    // alignItems: "center",
+    backgroundColor: "transparent",
+    // marginBottom: 20,
   },
 });

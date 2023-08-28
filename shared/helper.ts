@@ -13,7 +13,7 @@ export const apiCallInit = (otherHeaders: any) =>
   });
 
 export const formatDate = (date: Date) => {
-  const day = date.getDate();
+  const day = date.getDate().toString().padStart(2, "0");
   // console.log(day);
   // const month = monthName[date.getMonth()];
 
@@ -126,4 +126,8 @@ export async function getStuffFromSecureStore(key: string) {
   }
 
   // return result;
+}
+
+export async function secureDelete(key: string) {
+  await SecureStore.deleteItemAsync(key);
 }

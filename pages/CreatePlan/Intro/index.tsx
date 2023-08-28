@@ -1,4 +1,4 @@
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, Platform, StyleSheet, TouchableOpacity } from "react-native";
 
 import React from "react";
 import { Text, View } from "../../../components/Themed";
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // flexDirection: "row",
     alignItems: "center",
-    marginVertical: 30,
+    marginVertical: Platform.OS === "android" ? 5 : 30,
     textAlign: "center",
     color: COLORS.Light.colorTwentyFour,
     fontSize: SIZES.sizeSeven,
@@ -170,9 +170,9 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     alignSelf: "center",
-    marginBottom: 25,
+    marginBottom: Platform.OS === "android" ? 15 : 25,
     color: COLORS.Light.background,
-    marginTop: 40,
+    marginTop: Platform.OS === "android" ? 30 : 40,
   },
   step: {
     // borderWidth: 1,
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    marginBottom: "10%",
+    marginBottom: Platform.OS ? "0%" : "10%",
   },
   btn1Container: {
     marginVertical: 20,

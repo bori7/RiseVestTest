@@ -159,10 +159,10 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
     const request: SignUpUserRequestType = {
       email_address: userData?.email_address || "",
       password: userData?.password || "",
-      first_name: firstName,
-      last_name: lastName || "",
+      first_name: firstName.trim(),
+      last_name: lastName.trim() || "",
       date_of_birth: selectedDob || "",
-      phone_number: msisdn,
+      phone_number: msisdn.trim(),
     };
     dispatch(signupUser(request));
 
@@ -261,6 +261,7 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
                   textContentType="telephoneNumber"
                   keyboardType="phone-pad"
                   value={msisdn}
+                  maxLength={10}
                   selectionColor={COLORS.Light.colorOne}
                   outlineColor={COLORS.Light.colorTwentySix}
                   activeOutlineColor={COLORS.Light.colorOne}

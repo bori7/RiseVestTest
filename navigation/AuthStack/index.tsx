@@ -23,7 +23,7 @@ const AuthStack = (): React.ReactElement => {
         }
       }
     >
-      <Auth.Screen
+      {/* <Auth.Screen
         component={WelcomeScreen}
         name={AuthRoutes.Welcome}
         options={{ headerShown: false }}
@@ -32,7 +32,36 @@ const AuthStack = (): React.ReactElement => {
         component={SignIn}
         name={AuthRoutes.SignIn}
         options={{ headerShown: false }}
-      />
+      /> */}
+
+      {false ? (
+        <>
+          <Auth.Screen
+            component={SignIn}
+            name={AuthRoutes.SignIn}
+            options={{ headerShown: false }}
+          />
+          <Auth.Screen
+            component={WelcomeScreen}
+            name={AuthRoutes.Welcome}
+            options={{ headerShown: false }}
+          />
+        </>
+      ) : (
+        <>
+          <Auth.Screen
+            component={WelcomeScreen}
+            name={AuthRoutes.Welcome}
+            options={{ headerShown: false }}
+          />
+          <Auth.Screen
+            component={SignIn}
+            name={AuthRoutes.SignIn}
+            options={{ headerShown: false }}
+          />
+        </>
+      )}
+
       <Auth.Screen
         component={QualityAssets}
         name={AuthRoutes.QualityAssets}
