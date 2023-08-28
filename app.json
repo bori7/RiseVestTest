@@ -15,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.boriios.FaceVer"
@@ -32,7 +34,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "594fcd3d-4abf-4442-8888-d8adfb21f088"
+        "projectId": "96a777af-6edd-4f86-b788-06530dae704e"
       }
     }
   }
