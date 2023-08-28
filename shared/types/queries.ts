@@ -24,11 +24,11 @@ export interface GetRatesResponseType {
 }
 
 export interface GetQuotesResponseType {
-  quote: string | number;
-  author: string | number;
+  quote: string;
+  author: string;
 }
 
 export interface GetPlanProjectionResponseType {
-  total_invested: string | number;
-  total_returns: string | number;
+  total_invested: string;
+  total_returns: string;
 }

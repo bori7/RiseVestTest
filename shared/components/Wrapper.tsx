@@ -28,7 +28,7 @@ export default function Wrapper({ child }: props) {
       toast?.show(message, {
         type: type === "error" ? "danger" : type,
         placement: "top",
-        duration: 4500,
+        duration: 4000,
         animationType: "slide-in",
         textStyle: {
           fontSize: SIZES.sizeSix,

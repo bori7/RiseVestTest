@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View } from "../../../components/Themed";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../../constants/Colors";
@@ -31,6 +31,8 @@ import {
 import { getRates } from "../../../services/General";
 import { useQuery } from "react-query";
 import { getPlanProjections } from "../../../services/Plans";
+import { CreatePlanRequestType } from "../../../shared/types/slices";
+import { createPlan } from "../../../store/slices/plan";
 
 type NavigationProps = CompositeScreenProps<
   CreatePlanProps<CreatePlanRoutes.Review>,
@@ -87,10 +89,11 @@ const Review: React.FC<NavigationProps> = ({ navigation }) => {
           screen: MainRoutes.Success,
           params: {
             mainText: "You just created your plan.",
-            subText: "Well done, Deborah",
+            subText: `Well done, ${userData?.first_name}`,
             btnText: "View plan",
             toScreen: RootRoutes.CreatePlan,
             toSubScreen: CreatePlanRoutes.PlanDetails,
+            toSubScreenParams: { planId: planData?.id },
           },
         },
       },
@@ -107,8 +110,25 @@ const Review: React.FC<NavigationProps> = ({ navigation }) => {
   });
 
   const agreeContinue = () => {
-    navigation.dispatch(resetAction);
+    const request: CreatePlanRequestType = {
+      plan_name: planData?.plan_name || "",
+      target_amount: planData?.target_amount || "",
+      maturity_date: planData?.maturity_date || "",
+      token: userData?.token,
+    };
+    dispatch(createPlan(request));
+
+    if (!planLoading && planError == null && planData?.user_id) {
+      navigation.dispatch(resetAction);
+    }
   };
+
+  useEffect(() => {
+    if (!planLoading && planError == null && planData?.user_id) {
+      navigation.dispatch(resetAction);
+    }
+  }, [planData]);
+
   return (
     <View style={styles.main}>
       <View style={styles.container}>
@@ -145,7 +165,7 @@ const Review: React.FC<NavigationProps> = ({ navigation }) => {
                 <View style={styles.subHeaderD1}></View>
                 <Text
                   style={styles.subHeaderC1}
-                >{`Investments • $${projectionData?.total_invested}`}</Text>
+                >{`Investments • $${projectionData?.total_invested} || "0.00"`}</Text>
               </View>
               <View style={styles.subHeaderC}>
                 <View style={styles.subHeaderD2}></View>
@@ -249,6 +269,8 @@ const Review: React.FC<NavigationProps> = ({ navigation }) => {
                 err={false}
                 btnStyle={styles.btn1}
                 textStyle={styles.btn1text}
+                disabled={planLoading}
+                loading={planLoading}
               />
             </View>
             <View style={styles.btn2Container}>

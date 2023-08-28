@@ -95,6 +95,7 @@ export interface CreatePlanRequestType {
   plan_name: string;
   target_amount: string;
   maturity_date: string;
+  token?: string;
 }
 
 export interface CreatePlanResponseType {

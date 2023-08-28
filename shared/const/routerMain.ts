@@ -18,6 +18,7 @@ export type MainParamList = {
     btnText: string;
     toScreen: any;
     toSubScreen: any;
+    toSubScreenParams: any;
   };
 };
 

@@ -72,9 +72,9 @@ const PlanDetails: React.FC<NavigationProps> = ({ navigation, route }) => {
         planData?.invested_amount || 0,
         planData?.target_amount || 50,
         new Date(
-          new Date(planData?.maturity_date).setFullYear(
-            new Date().getFullYear() + 2
-          )
+          new Date(
+            planData?.maturity_date || new Date().toISOString()
+          ).setFullYear(new Date().getFullYear() + 2)
         ).toISOString() ||
           new Date(
             new Date().setFullYear(new Date().getFullYear() + 2)
@@ -96,7 +96,8 @@ const PlanDetails: React.FC<NavigationProps> = ({ navigation, route }) => {
     {
       title: `Balance in Naira (*₦${rateData?.buy_rate})`,
       value: `₦${
-        parseFloat(rateData?.buy_rate) * parseFloat(planData?.total_returns)
+        parseFloat(rateData?.buy_rate || "0.00") *
+        parseFloat(planData?.total_returns || "0.00")
       }`,
     },
     // {
@@ -262,15 +263,17 @@ const PlanDetails: React.FC<NavigationProps> = ({ navigation, route }) => {
                       <View style={styles.subHeaderD1}></View>
                       <Text style={styles.subHeaderC1}>
                         {` Investments • $${parseFloat(
-                          projectionData?.total_invested || 0
+                          projectionData?.total_invested || "0.00"
                         ).toFixed(2)}`}
                       </Text>
                     </View>
                     <View style={styles.subHeaderC}>
                       <View style={styles.subHeaderD2}></View>
-                      <Text style={styles.subHeaderC1}>{`Returns • $${
-                        projectionData?.total_returns || 0
-                      }`}</Text>
+                      <Text
+                        style={styles.subHeaderC1}
+                      >{`Returns • $${parseFloat(
+                        projectionData?.total_returns || "0.00"
+                      ).toFixed(2)}`}</Text>
                     </View>
                   </View>
                 </View>

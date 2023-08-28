@@ -20,8 +20,13 @@ export const createPlan = createAsyncThunk(
   async (request: CreatePlanRequestType, { rejectWithValue }) => {
     console.log("req: ", request);
     console.log("url: ", CREATE_PLAN);
+    let token = request.token;
+    delete request.token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     try {
-      const response = await apiPost(CREATE_PLAN, {}, request);
+      const response = await apiPost(CREATE_PLAN, headers, request);
       console.log("Create plan response: ", response.data);
       return response.data;
     } catch (error: any) {

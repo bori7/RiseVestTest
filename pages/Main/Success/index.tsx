@@ -47,6 +47,7 @@ const Success: React.FC<NavigationProps> = ({ navigation, route }) => {
                       params?.toScreen || MainRoutes.Homepage,
                       {
                         screen: params?.toSubScreen || MainRoutes.Homepage,
+                        params: params?.toSubScreenParams,
                       }
                     );
               }}
