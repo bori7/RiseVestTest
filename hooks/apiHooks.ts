@@ -1,6 +1,5 @@
 import { AxiosRequestHeaders } from "axios";
 import { apiCallInit } from "../shared/helper";
-import { useState, useEffect } from "react";
 
 export const apiPost = async (
   url: string,
@@ -39,45 +38,75 @@ export const apiGetFor = (
       return newRes;
     });
 
-export const useGetForApiCall = ({ url, headers, deps = [] as [] }: any) => {
-  const [data, setData] = useState<any>({});
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<{ message: string; code: string } | null>(
-    null
-  );
+export const getFor = async <T>(
+  url: string,
+  token: string | undefined
+): Promise<T> => {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
 
-  useEffect(() => {
-    const call = async () => {
-      setLoading(true);
-      await apiGetFor(url, headers)
-        .then((res) => {
-          setLoading(false);
-          if (res.data?.responseCode !== "000") {
-            setError({
-              code: res.data?.responseCode,
-              message: res.data?.message,
-            });
-          } else {
-            setData(res.data);
-            setError(null);
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          let errData = err?.response?.data;
-          console.error(
-            errData?.message || err.message,
-            "via USE GET API HOOKS"
-          );
-          setError({
-            message: errData?.message || err.message || "Failed Verification",
-            code: errData?.responseCode || err?.code || "86",
-          });
-          setLoading(false);
-        });
-    };
-    call();
-  }, [...deps]);
+  try {
+    const response = await apiGetFor(url, headers);
+    console.log("url :: ", url);
+    console.log("Response from get call :: ", response.data);
+    return response.data;
+  } catch (error) {
+    console.log("error while trying to call api :: ", error);
+    throw error;
+  }
+};
 
-  return [data, loading, error];
+export const getBy = async <T>(
+  url: string,
+  token: string | undefined,
+  param: string | [] | any,
+  paramValue: string | number | [] | any
+): Promise<T> => {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  console.log("paramValue :: ", paramValue);
+  if (typeof param === "object") {
+    url = `${url}?${param[0]}=${paramValue[0]}`;
+    for (let i = 1; i < param?.length; i++) {
+      console.log("param[i] :: ", param[i]);
+      console.log("paramValue[i] :: ", paramValue[i]);
+      url = `${url}&${param[i]}=${paramValue[i]}`;
+    }
+  } else {
+    url = `${url}?${param}=${paramValue}`;
+  }
+  console.log("url :: ", url);
+
+  try {
+    const response = await apiGetFor(url, headers);
+    console.log("Response from get call :: ", response.data);
+    return response.data;
+  } catch (error) {
+    console.log("error while trying to call api :: ", error);
+    throw error;
+  }
+};
+
+export const getByWithPathParam = async <T>(
+  url: string,
+  token: string | undefined,
+  param: string | [],
+  paramValue: string | number | undefined | []
+): Promise<T> => {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  url = `${url}/${paramValue}`;
+  try {
+    const response = await apiGetFor(url, headers);
+    console.log("url :: ", url);
+    console.log("Response from get call :: ", response.data);
+    return response.data;
+  } catch (error) {
+    console.log("error while trying to call api :: ", error);
+    throw error;
+  }
 };

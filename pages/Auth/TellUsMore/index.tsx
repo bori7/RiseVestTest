@@ -7,7 +7,7 @@ import {
 import { TextInput } from "react-native-paper";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "../../../components/Themed";
-import { COLORS, SIZES } from "../../../constants/Colors";
+import { COLORS, COUNTRIES, SIZES } from "../../../constants/Colors";
 import { CountryPicker, MainButton } from "../../../components";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
@@ -16,6 +16,13 @@ import { AuthProps, AuthRoutes } from "../../../shared/const/routerAuth";
 import { MainProps, MainRoutes } from "../../../shared/const/routerMain";
 import { CompositeScreenProps, CommonActions } from "@react-navigation/native";
 import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
+import { signupUser, updateUserState } from "../../../store/slices/user";
+import {
+  SignUpResponseType,
+  SignUpUserRequestType,
+} from "../../../shared/types/slices";
 
 type NavigationProps = CompositeScreenProps<
   AuthProps<AuthRoutes.TellUsMore>,
@@ -31,6 +38,11 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
   const [proceed, setProceed] = useState<boolean>(false);
   const [countryId, setCountryId] = useState<number>(0);
   const [selectedDob, setSelectedDob] = useState<string>("");
+
+  const dispatch = useDispatch<AppDispatch>();
+  const userState = useSelector((state: RootState) => state.user);
+  const { userLoading, userData, userError } = userState;
+
   const [isDatePickerVisible, setDatePickerVisibility] =
     useState<boolean>(false);
 
@@ -56,8 +68,10 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
   };
 
   const eighteenYearsAgo = new Date();
-  const minDate = new Date().setFullYear(eighteenYearsAgo.getFullYear() - 60);
-  const formattedMaxDate = new Date();
+  const minDate = new Date().setFullYear(eighteenYearsAgo.getFullYear() - 100);
+  const formattedMaxDate = new Date(
+    new Date().setFullYear(eighteenYearsAgo.getFullYear() - 18)
+  );
   const formattedMinDate = new Date(minDate);
 
   const showMode = (currentMode: any) => {
@@ -118,12 +132,50 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
             mainText: "You just created your Rise account",
             subText: "Welcome to Rise, let’s take you home",
             btnText: "Okay",
-            toScreen: MainRoutes.Homepage,
+            toScreen: RootRoutes.Auth,
+            toSubScreen: AuthRoutes.SignIn,
           },
         },
       },
     ],
   });
+
+  const signUp = () => {
+    dispatch(
+      updateUserState({
+        ...userState,
+        userError: null,
+        userData: {
+          ...userData,
+          first_name: firstName,
+          last_name: lastName,
+          username: nickName,
+          phone_number: COUNTRIES[countryId]?.phoneCode + msisdn,
+          date_of_birth: selectedDob,
+        },
+      })
+    );
+
+    const request: SignUpUserRequestType = {
+      email_address: userData?.email_address || "",
+      password: userData?.password || "",
+      first_name: firstName,
+      last_name: lastName || "",
+      date_of_birth: selectedDob || "",
+      phone_number: msisdn,
+    };
+    dispatch(signupUser(request));
+
+    if (!userLoading && userError == null && userData?.id) {
+      navigation.dispatch(resetAction);
+    }
+  };
+
+  useEffect(() => {
+    if (!userLoading && userError == null && userData?.id) {
+      navigation.dispatch(resetAction);
+    }
+  }, [userData]);
 
   return (
     <View style={styles.main}>
@@ -293,11 +345,12 @@ const TUM: React.FC<NavigationProps> = ({ navigation }) => {
                     //   },
                     // });
 
-                    navigation.dispatch(resetAction);
+                    signUp();
                   }}
                   err={false}
                   btnStyle={styles.btn1}
-                  disabled={!proceed}
+                  disabled={!proceed || userLoading}
+                  loading={userLoading}
                 />
               </View>
               <View style={styles.btn2Container}>

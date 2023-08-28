@@ -11,6 +11,9 @@ import { Text, View } from "../../../components/Themed";
 import { AuthProps, AuthRoutes } from "../../../shared/const/routerAuth";
 import { MainButton } from "../../../components";
 import { COLORS, SIZES } from "../../../constants/Colors";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
+import { updateUserState } from "../../../store/slices/user";
 
 type NavigationProps = AuthProps<AuthRoutes.SignUp>;
 
@@ -25,6 +28,10 @@ const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
   const [oneUpper, setOneUpper] = useState<boolean>(false);
   const [isStrong, setIsStrong] = useState<boolean>(false);
   const [validEmail, setValidEmail] = useState<boolean>(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const userState = useSelector((state: RootState) => state.user);
+  const { userLoading, userData, userError } = userState;
 
   useEffect(() => {
     if (!/[^a-zA-Z0-9]/g.test(password) && password !== " ") {
@@ -79,6 +86,22 @@ const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
     email,
   ]);
 
+  const signUp = () => {
+    dispatch(
+      updateUserState({
+        ...userState,
+        userError: null,
+        userData: {
+          // ...userData,
+          email_address: email,
+          password: password,
+        },
+      })
+    );
+
+    navigation?.navigate(AuthRoutes.TellUsMore);
+  };
+
   return (
     <View style={styles.main}>
       <View style={styles.container}>
@@ -103,9 +126,17 @@ const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
                   keyboardType="default"
                   autoCapitalize="none"
                   autoCorrect={false}
-                  selectionColor={COLORS.Light.colorOne}
+                  selectionColor={
+                    validEmail
+                      ? COLORS.Light.colorOne
+                      : COLORS.Light.colorFourteen
+                  }
                   outlineColor={COLORS.Light.colorTwentySix}
-                  activeOutlineColor={COLORS.Light.colorOne}
+                  activeOutlineColor={
+                    validEmail
+                      ? COLORS.Light.colorOne
+                      : COLORS.Light.colorFourteen
+                  }
                   value={email}
                   onChangeText={(val) => {
                     setEmail(val);
@@ -193,7 +224,7 @@ const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
                 <MainButton
                   title={"Sign Up"}
                   onPressFunction={() => {
-                    navigation?.navigate(AuthRoutes.TellUsMore);
+                    signUp();
                   }}
                   err={false}
                   btnStyle={styles.btn1}

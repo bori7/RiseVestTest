@@ -10,6 +10,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../../constants/Colors";
 import { TextInput } from "react-native-paper";
 import { MainButton } from "../../../components";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
+import { updatePlanData, updatePlanState } from "../../../store/slices/plan";
 
 type NavigationProps = CreatePlanProps<CreatePlanRoutes.GoalName>;
 
@@ -17,12 +20,31 @@ const GoalName: React.FC<NavigationProps> = ({ navigation }) => {
   const [savingFor, setSavingFor] = useState<string>("");
   const [proceed, setProceed] = useState<boolean>(false);
 
+  const dispatch = useDispatch<AppDispatch>();
+
+  const planState = useSelector((state: RootState) => state.plan);
+  const { planLoading, planData, planError } = planState;
+
   const fieldsFilled = () => {
     if (savingFor !== "" && savingFor !== " ") {
       setProceed(true);
     } else {
       setProceed(false);
     }
+  };
+
+  const submit = () => {
+    dispatch(
+      updatePlanState({
+        ...planState,
+        planError: null,
+        planData: {
+          // ...userData,
+          plan_name: savingFor,
+        },
+      })
+    );
+    navigation.navigate(CreatePlanRoutes.TargetAmount);
   };
 
   return (
@@ -76,7 +98,7 @@ const GoalName: React.FC<NavigationProps> = ({ navigation }) => {
             <MainButton
               title={"Continue"}
               onPressFunction={() => {
-                navigation.navigate(CreatePlanRoutes.TargetAmount);
+                submit();
               }}
               err={false}
               btnStyle={styles.btn1}

@@ -3,9 +3,11 @@ import {
   InitialUserStateType,
   LoginUserRequestType,
   RegistrationResponseType,
+  SignUpResponseType,
+  SignUpUserRequestType,
   UserDataType,
 } from "../../shared/types/slices";
-import { LOGIN_URL } from "../../constants/values";
+import { LOGIN_URL, SIGNUP_URL } from "../../constants/values";
 import { apiPost } from "../../hooks/apiHooks";
 
 const initialUserState: InitialUserStateType = {
@@ -25,6 +27,22 @@ export const loginUser = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       console.log("error while trying to sign in: ", error);
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+export const signupUser = createAsyncThunk(
+  "signupuser",
+  async (request: SignUpUserRequestType, { rejectWithValue }) => {
+    console.log("req: ", request);
+    console.log("url: ", SIGNUP_URL);
+    try {
+      const response = await apiPost(SIGNUP_URL, {}, request);
+      console.log("Sign Up response: ", response.data);
+      return response.data;
+    } catch (error: any) {
+      console.log("error while trying to sign up: ", error);
       return rejectWithValue(error?.response?.data);
     }
   }
@@ -92,7 +110,56 @@ export const userSlice = createSlice({
           message:
             action.payload?.message ||
             action.error?.message ||
-            "Unable to Login",
+            "Unable to log you in",
+        };
+        state.userMessage = "";
+      }
+    );
+
+    builder.addCase(signupUser.pending, (state: InitialUserStateType) => {
+      state.userLoading = true;
+      state.userError = null;
+      state.userMessage = "";
+    });
+    builder.addCase(
+      signupUser.fulfilled,
+      (
+        state: InitialUserStateType,
+        action: PayloadAction<SignUpResponseType>
+      ) => {
+        state.userLoading = false;
+        console.log("Sign up Payload", action.payload);
+        const respPayload = action.payload;
+
+        state.userError = null;
+        state.userMessage = `Welcome , ${respPayload?.first_name}`;
+        // state.userMessage = ``;
+        state.userData = {
+          ...state.userData,
+          id: respPayload?.id,
+          email_address: respPayload?.email_address,
+
+          first_name: respPayload?.first_name,
+          last_name: respPayload?.last_name,
+          username: respPayload?.username,
+          created_at: respPayload?.created_at,
+          phone_number: respPayload?.phone_number,
+
+          date_of_birth: respPayload?.date_of_birth?.substring(0, 10),
+        };
+      }
+    );
+    builder.addCase(
+      signupUser.rejected,
+      (state: InitialUserStateType, action: any) => {
+        console.log("Sign up error_action", action);
+        state.userLoading = false;
+        state.userError = {
+          code: action.error?.code || "89",
+          message:
+            action.payload?.message ||
+            action.error?.message ||
+            "Unable to sign you up",
         };
         state.userMessage = "";
       }

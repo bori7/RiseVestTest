@@ -18,6 +18,19 @@ import { LineChart } from "react-native-chart-kit";
 import { CommonActions, CompositeScreenProps } from "@react-navigation/native";
 import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
 import { MainRoutes } from "../../../shared/const/routerMain";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
+import {
+  computeEstimatedMonthlyInvestment,
+  formatDatePlaDetails,
+} from "../../../shared/helper";
+import {
+  GetPlanProjectionResponseType,
+  GetRatesResponseType,
+} from "../../../shared/types/queries";
+import { getRates } from "../../../services/General";
+import { useQuery } from "react-query";
+import { getPlanProjections } from "../../../services/Plans";
 
 type NavigationProps = CompositeScreenProps<
   CreatePlanProps<CreatePlanRoutes.Review>,
@@ -25,6 +38,45 @@ type NavigationProps = CompositeScreenProps<
 >;
 
 const Review: React.FC<NavigationProps> = ({ navigation }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const planState = useSelector((state: RootState) => state.plan);
+  const { planLoading, planData, planError } = planState;
+
+  const userState = useSelector((state: RootState) => state.user);
+  const { userLoading, userData, userError } = userState;
+
+  const {
+    data: rateData,
+    isLoading: rateDataLoading,
+    isError: rateDataError,
+  } = useQuery<GetRatesResponseType>("getrate", () =>
+    getRates(userData?.token)
+  );
+
+  const {
+    data: projectionData,
+    isLoading: projectionDataLoading,
+    isError: projectionDataError,
+  } = useQuery<GetPlanProjectionResponseType>("getprojection", () =>
+    getPlanProjections(
+      userData?.token,
+      ["monthly_investment", "target_amount", "maturity_date"],
+      [
+        computeEstimatedMonthlyInvestment(
+          planData?.target_amount,
+          planData?.maturity_date
+        ) || 0,
+        planData?.target_amount || 50,
+        new Date(
+          new Date(planData?.maturity_date || new Date()).setFullYear(
+            new Date().getFullYear() + 2
+          )
+        ).toISOString(),
+      ]
+    )
+  );
+
   const resetAction = CommonActions.reset({
     index: 1,
     routes: [
@@ -54,6 +106,9 @@ const Review: React.FC<NavigationProps> = ({ navigation }) => {
     ],
   });
 
+  const agreeContinue = () => {
+    navigation.dispatch(resetAction);
+  };
   return (
     <View style={styles.main}>
       <View style={styles.container}>
@@ -75,17 +130,28 @@ const Review: React.FC<NavigationProps> = ({ navigation }) => {
           </View>
 
           <View style={styles.subHeader}>
-            <Text style={styles.subHeaderR1}>Kate Ventures</Text>
-            <Text style={styles.subHeaderR2}>$10,930.75</Text>
-            <Text style={styles.subHeaderR3}>by 20 June 2021</Text>
+            <Text style={styles.subHeaderR1}>{planData?.plan_name}</Text>
+            <Text style={styles.subHeaderR2}>
+              {`$${Math.floor(
+                parseFloat(planData?.target_amount || "0.00") /
+                  parseFloat(rateData?.buy_rate || "100.00")
+              ).toFixed(2)}` || "0.00"}
+            </Text>
+            <Text style={styles.subHeaderR3}>
+              {formatDatePlaDetails(planData?.maturity_date)}
+            </Text>
             <View style={styles.subHeaderR4}>
               <View style={styles.subHeaderC}>
                 <View style={styles.subHeaderD1}></View>
-                <Text style={styles.subHeaderC1}>Investments • $50,400</Text>
+                <Text
+                  style={styles.subHeaderC1}
+                >{`Investments • $${projectionData?.total_invested}`}</Text>
               </View>
               <View style={styles.subHeaderC}>
                 <View style={styles.subHeaderD2}></View>
-                <Text style={styles.subHeaderC1}>Returns • $20,803</Text>
+                <Text style={styles.subHeaderC1}>{`Returns • $${
+                  projectionData?.total_returns || "0.00"
+                }`}</Text>
               </View>
             </View>
           </View>
@@ -98,16 +164,21 @@ const Review: React.FC<NavigationProps> = ({ navigation }) => {
       >
         <LineChart
           data={{
-            labels: ["2034", "2035", "2036", "2037"],
+            labels: [
+              new Date().getFullYear().toString(),
+              new Date(planData?.maturity_date || new Date().toISOString())
+                .getFullYear()
+                .toString(),
+            ],
             datasets: [
               {
-                data: [5800, 6703, 10803, 20803],
+                data: [0, parseFloat(planData?.target_amount || "0.00")],
                 color: () => COLORS.Light.colorSix,
-                strokeWidth: 2,
               },
               {
-                data: [20803, 25674, 36789, 50400],
+                data: [0, parseFloat(planData?.total_returns || "0.00")],
                 color: () => COLORS.Light.colorOne,
+                strokeWidth: 2,
               },
             ],
           }}
@@ -139,7 +210,12 @@ const Review: React.FC<NavigationProps> = ({ navigation }) => {
         <View style={styles.containerB}>
           <View style={styles.bR1}>
             <Text style={styles.bR1t1}>Estimated monthly investment</Text>
-            <Text style={styles.bR1t2}>$120</Text>
+            <Text style={styles.bR1t2}>{`$${
+              computeEstimatedMonthlyInvestment(
+                planData?.target_amount,
+                planData?.maturity_date
+              ) || 0
+            }`}</Text>
           </View>
           <View style={styles.bR2}></View>
           <View style={styles.bR3}>
@@ -168,7 +244,7 @@ const Review: React.FC<NavigationProps> = ({ navigation }) => {
               <MainButton
                 title={"Agree & Continue"}
                 onPressFunction={() => {
-                  navigation.dispatch(resetAction);
+                  agreeContinue();
                 }}
                 err={false}
                 btnStyle={styles.btn1}
@@ -287,6 +363,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.Light.colorOne,
     borderRadius: 10,
     marginRight: 5,
+    marginLeft: 5,
   },
   chart: {
     marginTop: 35,

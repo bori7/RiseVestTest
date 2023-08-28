@@ -131,7 +131,11 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
                 autoCapitalize="none"
                 autoCorrect={false}
                 onBlur={() => fieldsFilled()}
-                selectionColor={COLORS.Light.colorOne}
+                selectionColor={
+                  validEmail
+                    ? COLORS.Light.colorOne
+                    : COLORS.Light.colorFourteen
+                }
                 outlineColor={COLORS.Light.colorTwentySix}
                 activeOutlineColor={
                   validEmail

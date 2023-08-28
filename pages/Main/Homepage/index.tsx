@@ -1,6 +1,7 @@
 import {
   Image,
   ImageBackground,
+  ImageURISource,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -18,6 +19,16 @@ import { MainProps, MainRoutes } from "../../../shared/const/routerMain";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
 import { CreatePlanRoutes } from "../../../shared/const/routerCreatePlan";
+import { useQuery } from "react-query";
+import { AppDispatch, RootState } from "../../../store";
+import { useDispatch, useSelector } from "react-redux";
+import { getPlans } from "../../../services/Plans";
+import {
+  GetPlansItemType,
+  GetPlansResponseType,
+  GetQuotesResponseType,
+} from "../../../shared/types/queries";
+import { getQuotes } from "../../../services/General";
 
 type NavigationProps = CompositeScreenProps<
   MainProps<MainRoutes.Homepage>,
@@ -25,7 +36,35 @@ type NavigationProps = CompositeScreenProps<
 >;
 
 const HomePage: React.FC<NavigationProps> = ({ navigation }) => {
-  const planList: number[] = [1, 2];
+  const dispatch = useDispatch<AppDispatch>();
+
+  const userState = useSelector((state: RootState) => state.user);
+  const { userLoading, userData, userError } = userState;
+
+  const {
+    data: plansData,
+    isLoading,
+    isError,
+  } = useQuery<GetPlansResponseType>("getplans", () =>
+    getPlans(userData?.token)
+  );
+
+  const planList: GetPlansItemType[] | undefined = plansData?.items;
+
+  const plans: ImageURISource[] = [
+    IMAGES.PawIcon,
+    IMAGES.SabIcon,
+    IMAGES.BuildWealth,
+  ];
+
+  const {
+    data: quoteData,
+    isLoading: quoteLoading,
+    isError: quoteError,
+  } = useQuery<GetQuotesResponseType>("getquotes", () =>
+    getQuotes(userData?.token)
+  );
+
   return (
     <View style={styles.main}>
       <StatusBar barStyle="dark-content" />
@@ -34,7 +73,7 @@ const HomePage: React.FC<NavigationProps> = ({ navigation }) => {
           <View style={styles.r1}>
             <View style={styles.r1c1}>
               <Text style={styles.r1t1}>Good morning ☀</Text>
-              <Text style={styles.r1t2}>Deborah</Text>
+              <Text style={styles.r1t2}>{userData?.first_name}</Text>
             </View>
             <View style={styles.r1c2}>
               <TouchableOpacity style={styles.r1c2v1}>
@@ -173,21 +212,26 @@ const HomePage: React.FC<NavigationProps> = ({ navigation }) => {
                     Create an investment plan
                   </Text>
                 </View>
-                {planList?.map((_, index) => (
+                {planList?.map((planItem, index) => (
                   <TouchableOpacity
                     key={`#${index}`}
                     onPress={() => {
                       navigation?.navigate(RootRoutes.CreatePlan, {
                         screen: CreatePlanRoutes.PlanDetails,
+                        params: {
+                          planId: planItem.id,
+                        },
                       });
                     }}
                   >
                     <ImageBackground
                       style={styles.planItem}
-                      source={IMAGES.BuildWealth}
+                      source={plans[Math.floor(Math.random() * plans.length)]}
                     >
-                      <Text style={styles.planText}>Build Wealth</Text>
-                      <Text style={styles.planText}>$188.25</Text>
+                      <Text style={styles.planText}>{planItem.plan_name}</Text>
+                      <Text
+                        style={styles.planText}
+                      >{`$${planItem.target_amount}`}</Text>
                       <Text style={styles.planText}>Mixed assets</Text>
                     </ImageBackground>
                   </TouchableOpacity>
@@ -209,13 +253,9 @@ const HomePage: React.FC<NavigationProps> = ({ navigation }) => {
               <View style={styles.sr5a}>
                 <Text style={styles.sr5at1}>TODAY’S QUOTE</Text>
                 <View style={styles.sr5ar1}></View>
-                <Text style={styles.sr5at2}>
-                  We have no intention of rotating capital out of strong
-                  multi-year investments because they’ve recently done well or
-                  because ‘growth’ has out performed ‘value’.
-                </Text>
+                <Text style={styles.sr5at2}>{`${quoteData?.quote}`}</Text>
                 <View style={styles.sr5ar2}>
-                  <Text style={styles.sr5at3}>Carl Sagan</Text>
+                  <Text style={styles.sr5at3}>{`${quoteData?.author}`}</Text>
                   <TouchableOpacity style={styles.sr5ar3}>
                     {/* <Text style={styles.sr5at4}>0</Text> */}
                     <Feather

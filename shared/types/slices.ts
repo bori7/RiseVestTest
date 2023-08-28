@@ -46,6 +46,7 @@ export interface PlanDataType {
   target_amount?: string;
 
   maturity_date?: string;
+  user_id?: string;
   returns?: string[];
 }
 
@@ -65,4 +66,46 @@ export interface RegistrationResponseType {
 
   total_balance?: string;
   total_returns?: string;
+}
+
+export interface SignUpUserRequestType {
+  first_name: string;
+  last_name: string;
+
+  email_address: string;
+  password: string;
+  phone_number: string;
+  date_of_birth: string;
+}
+
+export interface SignUpResponseType {
+  id?: string;
+  created_at?: string;
+  email_address?: string;
+
+  first_name?: string;
+  last_name?: string;
+  username?: string;
+
+  phone_number?: string;
+  date_of_birth?: string;
+}
+
+export interface CreatePlanRequestType {
+  plan_name: string;
+  target_amount: string;
+  maturity_date: string;
+}
+
+export interface CreatePlanResponseType {
+  id?: string;
+  created_at?: string;
+  plan_name?: string;
+  invested_amount?: string;
+  total_returns?: string;
+  target_amount?: string;
+
+  maturity_date?: string;
+  user_id?: string;
+  returns?: string[];
 }

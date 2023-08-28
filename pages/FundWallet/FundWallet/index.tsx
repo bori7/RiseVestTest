@@ -18,6 +18,11 @@ import { MainButton } from "../../../components";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
 import { CreatePlanRoutes } from "../../../shared/const/routerCreatePlan";
+import { GetRatesResponseType } from "../../../shared/types/queries";
+import { getRates } from "../../../services/General";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
+import { useQuery } from "react-query";
 
 type NavigationProps = CompositeScreenProps<
   FundWalletProps<FundWalletRoutes.FundWallet>,
@@ -33,40 +38,53 @@ interface Iprops {
 }
 
 const FundWallet: React.FC<NavigationProps> = ({ navigation }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const userState = useSelector((state: RootState) => state.user);
+  const { userLoading, userData, userError } = userState;
+
+  const {
+    data: rateData,
+    isLoading: rateDataLoading,
+    isError: rateDataError,
+  } = useQuery<GetRatesResponseType>("getrate2", () =>
+    getRates(userData?.token)
+  );
+
   const channels: Iprops[] = [
     {
       icon: "bank-transfer",
       name: "Naira Bank Transfer",
       time: "Timeline - 15 mins",
-      rate: "Rate - $1 = ₦490",
+      rate: `Rate - $1 = ₦${rateData?.sell_rate}`,
       fee: "Fee - 1.5%",
     },
     {
       icon: "credit-card-outline",
       name: "Naira Debit card",
       time: "Timeline - 15 mins",
-      rate: "Rate - $1 = ₦490",
+      rate: `Rate - $1 = ₦${rateData?.sell_rate}`,
       fee: "Fee - 1.5%",
     },
     {
       icon: "bank-outline",
       name: "Naira Direct Debit",
       time: "Timeline - 15 mins",
-      rate: "Rate - $1 = ₦490",
+      rate: `Rate - $1 = ₦${rateData?.sell_rate}`,
       fee: "Fee - 1.5%",
     },
     {
       icon: "credit-card-plus-outline",
       name: "USD Debit/Credit Card",
       time: "Timeline - 1 business day",
-      rate: "Rate - $1 = ₦490",
+      rate: `Rate - $1 = ₦${rateData?.sell_rate}`,
       fee: "Fee - 0.5%",
     },
     {
       icon: "bitcoin",
       name: "Crypto",
       time: "Timeline - 15 mins",
-      rate: "Rate - $1 = ₦490",
+      rate: `Rate - $1 = ₦${rateData?.sell_rate}`,
       fee: "Fee - 0.1%",
     },
   ];
@@ -159,7 +177,9 @@ const FundWallet: React.FC<NavigationProps> = ({ navigation }) => {
                         We buy US dollars at this rate
                       </Text>
                     </View>
-                    <Text style={styles.mr2aii}>₦490</Text>
+                    <Text
+                      style={styles.mr2aii}
+                    >{`₦${rateData?.buy_rate}`}</Text>
                   </View>
                   <View style={styles.mr2a}>
                     <View style={styles.mr2ai}>
@@ -168,7 +188,9 @@ const FundWallet: React.FC<NavigationProps> = ({ navigation }) => {
                         The current value of your investments in Naira
                       </Text>
                     </View>
-                    <Text style={styles.mr2aii}>₦490</Text>
+                    <Text
+                      style={styles.mr2aii}
+                    >{`₦${rateData?.sell_rate}`}</Text>
                   </View>
                 </View>
                 <Text style={styles.mr3}>

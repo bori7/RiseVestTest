@@ -20,20 +20,101 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { RootRoutes, RootScreenProps } from "../../../shared/const/routerRoot";
 import { Screen } from "react-native-screens";
 import { FundWalletRoutes } from "../../../shared/const/routerFundWallet";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
+import { useQuery } from "react-query";
+import { getPlan, getPlanProjections } from "../../../services/Plans";
+import {
+  GetPlanProjectionResponseType,
+  GetPlansItemType,
+  GetRatesResponseType,
+} from "../../../shared/types/queries";
+import { formatDatePlaDetails } from "../../../shared/helper";
+import { getRates } from "../../../services/General";
 
 type NavigationProps = CompositeScreenProps<
   CreatePlanProps<CreatePlanRoutes.PlanDetails>,
   RootScreenProps<RootRoutes.FundWallet> | RootScreenProps<RootRoutes.Main>
 >;
 
-const PlanDetails: React.FC<NavigationProps> = ({ navigation }) => {
+const PlanDetails: React.FC<NavigationProps> = ({ navigation, route }) => {
+  const params = route.params;
+  const dispatch = useDispatch<AppDispatch>();
+
+  const userState = useSelector((state: RootState) => state.user);
+  const { userLoading, userData, userError } = userState;
+
+  const {
+    data: planData,
+    isLoading: planDateLoading,
+    isError: planDataError,
+  } = useQuery<GetPlansItemType>("getplan", () =>
+    getPlan(userData?.token, "id", params?.planId)
+  );
+
+  const {
+    data: rateData,
+    isLoading: rateDataLoading,
+    isError: rateDataError,
+  } = useQuery<GetRatesResponseType>("getrate", () =>
+    getRates(userData?.token)
+  );
+
+  const {
+    data: projectionData,
+    isLoading: projectionDataLoading,
+    isError: projectionDataError,
+  } = useQuery<GetPlanProjectionResponseType>("getprojection", () =>
+    getPlanProjections(
+      userData?.token,
+      ["monthly_investment", "target_amount", "maturity_date"],
+      [
+        planData?.invested_amount || 0,
+        planData?.target_amount || 50,
+        new Date(
+          new Date(planData?.maturity_date).setFullYear(
+            new Date().getFullYear() + 2
+          )
+        ).toISOString() ||
+          new Date(
+            new Date().setFullYear(new Date().getFullYear() + 2)
+          ).toISOString(),
+      ]
+    )
+  );
+
   const infoList = [
-    { title: "Total earnings", value: "$12,000.09" },
-    { title: "Current earnings", value: "$12,000.09" },
-    { title: "Deposit value", value: "$50,543.05" },
-    { title: "Balance in Naira (*₦505)", value: "₦31,918,837.5" },
-    { title: "Plan created on", value: "23rd July, 2019" },
-    { title: "Maturity date", value: "24th July 2022" },
+    { title: "Total earnings", value: `$${planData?.total_returns || "0.00"}` },
+    {
+      title: "Current earnings",
+      value: `$${planData?.total_returns || "0.00"}`,
+    },
+    {
+      title: "Deposit value",
+      value: `$${planData?.invested_amount || "0.00"}`,
+    },
+    {
+      title: `Balance in Naira (*₦${rateData?.buy_rate})`,
+      value: `₦${
+        parseFloat(rateData?.buy_rate) * parseFloat(planData?.total_returns)
+      }`,
+    },
+    // {
+    //   title: "Plan created on",
+    //   value: `${planData?.created_at?.substring(0, 10)}`,
+    // },
+    {
+      title: "Plan created on",
+      value: `${formatDatePlaDetails(planData?.created_at)}`,
+    },
+    // {
+    //   title: "Maturity date",
+    //   value: `${planData?.maturity_date?.substring(0, 10)}`,
+    // },
+    {
+      title: "Maturity date",
+      value: `${formatDatePlaDetails(planData?.maturity_date)}`,
+    },
   ];
 
   const transactions = [
@@ -92,8 +173,8 @@ const PlanDetails: React.FC<NavigationProps> = ({ navigation }) => {
               </TouchableOpacity>
             </View>
             <View style={styles.headingC2}>
-              <Text style={styles.headingC2t1}>Start a business</Text>
-              <Text style={styles.headingC2t2}>for Kate Ventures</Text>
+              <Text style={styles.headingC2t1}>{planData?.plan_name}</Text>
+              <Text style={styles.headingC2t2}>for {userData?.first_name}</Text>
             </View>
             <View style={styles.headingC3}>
               <TouchableOpacity style={styles.image}>
@@ -116,9 +197,13 @@ const PlanDetails: React.FC<NavigationProps> = ({ navigation }) => {
             <View style={styles.topContent}>
               <View style={styles.r1}>
                 <Text style={styles.r1t1}>Plan Balance</Text>
-                <Text style={styles.r1t2}>$0.00</Text>
+                <Text style={styles.r1t2}>
+                  ${`${planData?.invested_amount || "0.00"}`}
+                </Text>
                 <View style={styles.r1t3}>
-                  <Text style={styles.r1t3a}>~ ₦0.00</Text>
+                  <Text style={styles.r1t3a}>
+                    ~ ${`${planData?.total_returns || "0.00"}`}
+                  </Text>
                   <TouchableOpacity style={styles.r1t3b}>
                     <AntDesign
                       name="questioncircle"
@@ -128,11 +213,19 @@ const PlanDetails: React.FC<NavigationProps> = ({ navigation }) => {
                   </TouchableOpacity>
                 </View>
                 <Text style={styles.r1t4}>Gains</Text>
-                <Text style={styles.r1t5}>+$5,000.43 • +12.4%</Text>
+                <Text style={styles.r1t5}>
+                  +${planData?.total_returns} • +
+                  {(parseFloat(planData?.total_returns || "0") /
+                    parseFloat(planData?.target_amount || "100")) *
+                    100}
+                  %
+                </Text>
               </View>
               <View style={styles.r2}>
                 <Text style={styles.r2t1}>0.01 achieved</Text>
-                <Text style={styles.r2t1}>Target: $20,053.90</Text>
+                <Text style={styles.r2t1}>
+                  Target: ${planData?.target_amount}
+                </Text>
               </View>
               <TouchableOpacity style={styles.r3}>
                 <View style={styles.r3a}></View>
@@ -158,18 +251,26 @@ const PlanDetails: React.FC<NavigationProps> = ({ navigation }) => {
               <View style={styles.r6}>
                 <View style={styles.subHeader}>
                   <Text style={styles.subHeaderR1}>Performance</Text>
-                  <Text style={styles.subHeaderR2}>$208.39</Text>
-                  <Text style={styles.subHeaderR3}>July 26th, 2021</Text>
+                  <Text style={styles.subHeaderR2}>
+                    ${`${planData?.total_returns}`}
+                  </Text>
+                  <Text style={styles.subHeaderR3}>{`${formatDatePlaDetails(
+                    planData?.maturity_date
+                  )}`}</Text>
                   <View style={styles.subHeaderR4}>
                     <View style={styles.subHeaderC}>
                       <View style={styles.subHeaderD1}></View>
                       <Text style={styles.subHeaderC1}>
-                        Investments • $50,400
+                        {` Investments • $${parseFloat(
+                          projectionData?.total_invested || 0
+                        ).toFixed(2)}`}
                       </Text>
                     </View>
                     <View style={styles.subHeaderC}>
                       <View style={styles.subHeaderD2}></View>
-                      <Text style={styles.subHeaderC1}>Returns • $20,803</Text>
+                      <Text style={styles.subHeaderC1}>{`Returns • $${
+                        projectionData?.total_returns || 0
+                      }`}</Text>
                     </View>
                   </View>
                 </View>

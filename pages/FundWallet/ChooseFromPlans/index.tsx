@@ -1,6 +1,7 @@
 import {
   ImageBackground,
   ImageURISource,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
@@ -13,6 +14,14 @@ import {
 } from "../../../shared/const/routerFundWallet";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { COLORS, IMAGES, SIZES } from "../../../constants/Colors";
+import { AppDispatch, RootState } from "../../../store";
+import { useDispatch, useSelector } from "react-redux";
+import { getPlans } from "../../../services/Plans";
+import {
+  GetPlansItemType,
+  GetPlansResponseType,
+} from "../../../shared/types/queries";
+import { useQuery } from "react-query";
 
 type NavigationProps = FundWalletProps<FundWalletRoutes.ChooseFromPlans>;
 
@@ -24,6 +33,21 @@ interface Iprops {
 }
 
 const CFP: React.FC<NavigationProps> = ({ navigation }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const userState = useSelector((state: RootState) => state.user);
+  const { userLoading, userData, userError } = userState;
+
+  const {
+    data: plansData,
+    isLoading,
+    isError,
+  } = useQuery<GetPlansResponseType>("getplans", () =>
+    getPlans(userData?.token)
+  );
+
+  const planList: GetPlansItemType[] | undefined = plansData?.items;
+
   const plans: Iprops[] = [
     {
       img: IMAGES.PawIcon,
@@ -66,35 +90,45 @@ const CFP: React.FC<NavigationProps> = ({ navigation }) => {
           <Text style={styles.subHeader}>
             Tap on any of the plans to select
           </Text>
-
-          <View style={styles.plans}>
-            {plans?.map((p, index) => (
-              <TouchableOpacity
-                key={`#${index}`}
-                style={styles.plan}
-                onPress={() => {
-                  navigation.navigate(FundWalletRoutes.SelectBank);
-                }}
-              >
-                <ImageBackground style={styles.planItem} source={p.img}>
-                  <View style={styles.pDas}>
-                    <View style={styles.pDa}>
-                      <Text style={styles.planText}>{p.txt1}</Text>
-                      <Text style={styles.planTextB}>{p.txt2}</Text>
-                      <Text style={styles.planText}>{p.txt3}</Text>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+            style={styles.scroll}
+          >
+            <View style={styles.plans}>
+              {planList?.map((p, index) => (
+                <TouchableOpacity
+                  key={`#${index}`}
+                  style={styles.plan}
+                  onPress={() => {
+                    navigation.navigate(FundWalletRoutes.SelectBank);
+                  }}
+                >
+                  <ImageBackground
+                    style={styles.planItem}
+                    source={plans[Math.floor(Math.random() * plans.length)].img}
+                  >
+                    <View style={styles.pDas}>
+                      <View style={styles.pDa}>
+                        <Text style={styles.planText}>{p.plan_name}</Text>
+                        <Text
+                          style={styles.planTextB}
+                        >{`$${p.target_amount}`}</Text>
+                        <Text style={styles.planText}>{""}</Text>
+                      </View>
+                      <View style={styles.pDb}>
+                        <AntDesign
+                          name="arrowright"
+                          size={24}
+                          color={COLORS.Light.background}
+                        />
+                      </View>
                     </View>
-                    <View style={styles.pDb}>
-                      <AntDesign
-                        name="arrowright"
-                        size={24}
-                        color={COLORS.Light.background}
-                      />
-                    </View>
-                  </View>
-                </ImageBackground>
-              </TouchableOpacity>
-            ))}
-          </View>
+                  </ImageBackground>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
         </View>
       </View>
     </View>
@@ -198,5 +232,19 @@ const styles = StyleSheet.create({
   },
   pDb: {
     backgroundColor: "transparent",
+  },
+  scroll: {
+    // borderWidth: 1,
+    width: "100%",
+    // marginTop: 10,
+    backgroundColor: "transparent",
+    marginBottom: 20,
+  },
+  scrollContent: {
+    // borderWidth: 1,
+    // width: "100%",
+    // alignItems: "center",
+    backgroundColor: "transparent",
+    // marginBottom: 20,
   },
 });

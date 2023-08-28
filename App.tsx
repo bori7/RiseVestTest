@@ -13,6 +13,9 @@ import InactivityWrapper from "./shared/components/InactivityWrapper";
 import Wrapper from "./shared/components/Wrapper";
 import { Provider as PaperProvider } from "react-native-paper";
 import SplashScreen from "react-native-splash-screen";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -33,12 +36,14 @@ export default function App() {
     >
       <InactivityWrapper>
         <SafeAreaProvider>
-          <Provider store={store}>
-            <PaperProvider>
-              <Wrapper child={<Navigation colorScheme={colorScheme} />} />
-              <StatusBar />
-            </PaperProvider>
-          </Provider>
+          <QueryClientProvider client={queryClient}>
+            <Provider store={store}>
+              <PaperProvider>
+                <Wrapper child={<Navigation colorScheme={colorScheme} />} />
+                <StatusBar />
+              </PaperProvider>
+            </Provider>
+          </QueryClientProvider>
         </SafeAreaProvider>
       </InactivityWrapper>
     </ToastProvider>

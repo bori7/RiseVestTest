@@ -15,10 +15,32 @@ export const apiCallInit = (otherHeaders: any) =>
 export const formatDate = (date: Date) => {
   const day = date.getDate();
   // console.log(day);
-  const month = monthName[date.getMonth()];
+  // const month = monthName[date.getMonth()];
+
+  const month = monthNumber[date.getMonth()];
 
   const year = date.getFullYear();
-  return `${day}-${month.substring(0, 3)}-${year}`;
+  // return `${day}-${month.substring(0, 3)}-${year}`;
+  return `${year}-${month}-${day}`;
+};
+
+export const formatDatePlaDetails = (date: String | undefined) => {
+  if (!date) {
+    return date;
+  }
+  console.log(date);
+  date = date.substring(0, 10);
+  const day = date.substring(8);
+  const m: any = date.substring(5, 7);
+  const y = date.substring(0, 4);
+
+  const month = monthName[+m];
+
+  // const month = monthNumber[date.getMonth()];
+
+  const year = y;
+  return `${day} ${month}, ${year}`;
+  // return `${year}-${month}-${day}`;
 };
 
 export const monthName = [
@@ -35,6 +57,35 @@ export const monthName = [
   "November",
   "December",
 ];
+export const monthNumber = [
+  "01",
+  "02",
+  "03",
+  "04",
+  "05",
+  "06",
+  "07",
+  "08",
+  "09",
+  "10",
+  "11",
+  "12",
+];
+
+export const computeEstimatedMonthlyInvestment = (
+  amount: string | undefined,
+  date: string | undefined
+) => {
+  let ans = 0;
+
+  const yearDiff =
+    new Date(date || new Date()).getFullYear() + 2 - new Date().getFullYear();
+  ans = Math.floor(parseFloat(amount || "0.00") / (yearDiff * 12));
+
+  console.log(ans, amount, yearDiff);
+
+  return ans;
+};
 
 // export async function secureSave(key: string, value: any) {
 //   // console.log('Value: ', value);

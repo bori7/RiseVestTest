@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View } from "../../../components/Themed";
 import {
   CreatePlanProps,
@@ -10,19 +10,70 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../../constants/Colors";
 import { TextInput } from "react-native-paper";
 import { MainButton } from "../../../components";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
+import { updatePlanState } from "../../../store/slices/plan";
+import { getRates } from "../../../services/General";
+import { GetRatesResponseType } from "../../../shared/types/queries";
+import { useQuery } from "react-query";
 
 type NavigationProps = CreatePlanProps<CreatePlanRoutes.TargetAmount>;
 
 const TargetAmount: React.FC<NavigationProps> = ({ navigation }) => {
   const [amount, setAmount] = useState<string>("");
   const [proceed, setProceed] = useState<boolean>(false);
+  const [validAmount, setValidAmount] = useState<boolean>(true);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const planState = useSelector((state: RootState) => state.plan);
+  const { planLoading, planData, planError } = planState;
+
+  const userState = useSelector((state: RootState) => state.user);
+  const { userLoading, userData, userError } = userState;
+
+  const {
+    data: rateData,
+    isLoading: rateDataLoading,
+    isError: rateDataError,
+  } = useQuery<GetRatesResponseType>("getrate", () =>
+    getRates(userData?.token)
+  );
 
   const fieldsFilled = () => {
-    if (amount !== "" && amount !== " ") {
+    if (/^[0-9]+$/.test(amount)) {
+      setValidAmount(true);
+    } else {
+      setValidAmount(false);
+    }
+    if (amount !== "" && amount !== " " && validAmount) {
       setProceed(true);
     } else {
       setProceed(false);
     }
+  };
+  useEffect(() => {
+    // console.log("email::", email);
+    // console.log("password::", password);
+    fieldsFilled();
+    // console.log("proceed::", proceed);
+  }, [amount, validAmount]);
+
+  const submit = () => {
+    dispatch(
+      updatePlanState({
+        ...planState,
+        planError: null,
+        planData: {
+          ...planData,
+          target_amount: Math.floor(
+            parseFloat(amount || "0.00") /
+              parseFloat(rateData?.buy_rate || "100.00")
+          ).toFixed(2),
+        },
+      })
+    );
+    navigation.navigate(CreatePlanRoutes.TargetDate);
   };
 
   return (
@@ -58,13 +109,17 @@ const TargetAmount: React.FC<NavigationProps> = ({ navigation }) => {
               placeholderTextColor={COLORS.Light.colorTwentySeven}
               // textContentType="emailAddress"
               style={{ ...styles.inputContent }}
-              keyboardType="default"
+              keyboardType="decimal-pad"
               autoCapitalize="none"
               autoCorrect={false}
               onBlur={() => fieldsFilled()}
-              selectionColor={COLORS.Light.colorOne}
+              selectionColor={
+                validAmount ? COLORS.Light.colorOne : COLORS.Light.colorFourteen
+              }
               outlineColor={COLORS.Light.colorTwentySix}
-              activeOutlineColor={COLORS.Light.colorOne}
+              activeOutlineColor={
+                validAmount ? COLORS.Light.colorOne : COLORS.Light.colorFourteen
+              }
               value={amount}
               onChangeText={(val) => {
                 setAmount(val);
@@ -82,7 +137,7 @@ const TargetAmount: React.FC<NavigationProps> = ({ navigation }) => {
             <MainButton
               title={"Continue"}
               onPressFunction={() => {
-                navigation.navigate(CreatePlanRoutes.TargetDate);
+                submit();
               }}
               err={false}
               btnStyle={styles.btn1}

@@ -13,6 +13,9 @@ import { MainButton } from "../../../components";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { formatDate } from "../../../shared/helper";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
+import { updatePlanState } from "../../../store/slices/plan";
 
 type NavigationProps = CreatePlanProps<CreatePlanRoutes.TargetDate>;
 
@@ -20,7 +23,15 @@ const TargetDate: React.FC<NavigationProps> = ({ navigation }) => {
   const [proceed, setProceed] = useState<boolean>(false);
 
   const [selectedDob, setSelectedDob] = useState<string>("");
-  const [date, setDate] = useState<Date>(new Date());
+  const [date, setDate] = useState<Date>(
+    new Date(new Date().setFullYear(new Date().getFullYear() + 2))
+  );
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const planState = useSelector((state: RootState) => state.plan);
+  const { planLoading, planData, planError } = planState;
+
   const [isDatePickerVisible, setDatePickerVisibility] =
     useState<boolean>(false);
 
@@ -38,8 +49,10 @@ const TargetDate: React.FC<NavigationProps> = ({ navigation }) => {
   };
 
   const eighteenYearsAgo = new Date();
-  const minDate = new Date().setFullYear(eighteenYearsAgo.getFullYear() - 60);
-  const formattedMaxDate = new Date();
+  const minDate = new Date().setFullYear(eighteenYearsAgo.getFullYear() + 2);
+  const formattedMaxDate = new Date(
+    new Date().setFullYear(eighteenYearsAgo.getFullYear() + 60)
+  );
   const formattedMinDate = new Date(minDate);
 
   const showMode = (currentMode: any) => {
@@ -76,6 +89,20 @@ const TargetDate: React.FC<NavigationProps> = ({ navigation }) => {
     fieldsFilled();
     // console.log("proceed::", proceed);
   }, [selectedDob]);
+
+  const submit = () => {
+    dispatch(
+      updatePlanState({
+        ...planState,
+        planError: null,
+        planData: {
+          ...planData,
+          maturity_date: selectedDob,
+        },
+      })
+    );
+    navigation.navigate(CreatePlanRoutes.Review);
+  };
 
   return (
     <View style={styles.main}>
@@ -165,7 +192,7 @@ const TargetDate: React.FC<NavigationProps> = ({ navigation }) => {
             <MainButton
               title={"Continue"}
               onPressFunction={() => {
-                navigation.navigate(CreatePlanRoutes.Review);
+                submit();
               }}
               err={false}
               btnStyle={styles.btn1}
