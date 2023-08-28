@@ -215,17 +215,21 @@ const PlanDetails: React.FC<NavigationProps> = ({ navigation, route }) => {
                 </View>
                 <Text style={styles.r1t4}>Gains</Text>
                 <Text style={styles.r1t5}>
-                  +${planData?.total_returns} • +
-                  {(parseFloat(planData?.total_returns || "0") /
-                    parseFloat(planData?.target_amount || "100")) *
-                    100}
+                  +${parseFloat(planData?.total_returns || "0.00").toFixed(2)} •
+                  +
+                  {Math.floor(
+                    (parseFloat(planData?.total_returns || "0") /
+                      parseFloat(planData?.target_amount || "100")) *
+                      100
+                  ).toFixed(2)}
                   %
                 </Text>
               </View>
               <View style={styles.r2}>
                 <Text style={styles.r2t1}>0.01 achieved</Text>
                 <Text style={styles.r2t1}>
-                  Target: ${planData?.target_amount}
+                  Target: $
+                  {parseFloat(planData?.target_amount || "0.00").toFixed(2)}
                 </Text>
               </View>
               <TouchableOpacity style={styles.r3}>
@@ -253,7 +257,7 @@ const PlanDetails: React.FC<NavigationProps> = ({ navigation, route }) => {
                 <View style={styles.subHeader}>
                   <Text style={styles.subHeaderR1}>Performance</Text>
                   <Text style={styles.subHeaderR2}>
-                    ${`${planData?.total_returns}`}
+                    ${`${planData?.total_returns || "0.00"}`}
                   </Text>
                   <Text style={styles.subHeaderR3}>{`${formatDatePlaDetails(
                     planData?.maturity_date

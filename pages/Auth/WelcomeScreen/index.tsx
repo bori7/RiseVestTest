@@ -13,7 +13,7 @@ import { IS_RISE_USER_KEY } from "../../../constants/values";
 type NavigationProps = AuthProps<AuthRoutes.Welcome>;
 
 const WS: React.FC<NavigationProps> = ({ navigation }) => {
-  secureDelete(IS_RISE_USER_KEY);
+  // secureDelete(IS_RISE_USER_KEY);
 
   const userState = useSelector((state: RootState) => state.user);
   const { userLoading, userData, userError } = userState;
