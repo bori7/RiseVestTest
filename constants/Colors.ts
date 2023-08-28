@@ -70,7 +70,6 @@ export const SIZES = {
 };
 
 export const IMAGES = {
-  AccountPic: require("../shared/assets/images/jpeg/account_pic.jpeg"),
   AddButton: require("../shared/assets/images/png/add.png"),
 
   BackButton: require("../shared/assets/images/png/back_button.png"),
@@ -115,7 +114,7 @@ export const IconBottomBar = {
   Plans: require("../shared/assets/images/svg/plans_icon.svg"),
   Wallet: require("../shared/assets/images/svg/wallet_icon.svg"),
   Feed: require("../shared/assets/images/svg/feed_icon.svg"),
-  Account: require("../shared/assets/images/svg/account_holder.svg"),
+  RVLOGO: require("../shared/assets/images/jpeg/risevest_logo.jpeg"),
 };
 
 export const COUNTRIES = [

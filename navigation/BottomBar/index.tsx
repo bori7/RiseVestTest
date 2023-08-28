@@ -10,7 +10,6 @@ import Home from "../../shared/assets/images/svg/home_icon.svg";
 import Plans from "../../shared/assets/images/svg/plans_icon.svg";
 import Wallet from "../../shared/assets/images/svg/wallet_icon.svg";
 import Feed from "../../shared/assets/images/svg/feed_icon.svg";
-// import Account from "../../shared/assets/images/svg/account_holder.svg";
 import {
   Entypo,
   Ionicons,
