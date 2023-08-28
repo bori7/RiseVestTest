@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Image, StyleSheet } from "react-native";
+import { Image, Platform, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../../constants/Colors";
 import Homepage from "../../pages/Main/Homepage";
 import { TabOptions } from "../../shared/const/routerBottomBar";
@@ -147,7 +147,7 @@ const BottomTabNavigator = (): React.ReactElement => {
 
 const styles = StyleSheet.create({
   tabBarStyle: {
-    height: 100,
+    height: Platform.OS === "android" ? 70 : 100,
     backgroundColor: COLORS.Light.background,
     borderTopWidth: 1,
     paddingHorizontal: 20,
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   containerItem: {
     alignItems: "center",
     gap: 8,
-    marginBottom: 15,
+    marginBottom: Platform.OS === "android" ? 10 : 15,
   },
   containerIcon: {
     height: 30,
