@@ -1,5 +1,5 @@
 import axios from "axios";
-// import * as SecureStore from "expo-secure-store";
+import * as SecureStore from "expo-secure-store";
 
 export const apiCallInit = (otherHeaders: any) =>
   axios.create({
@@ -87,27 +87,43 @@ export const computeEstimatedMonthlyInvestment = (
   return ans;
 };
 
-// export async function secureSave(key: string, value: any) {
-//   // console.log('Value: ', value);
-//   if (typeof value !== "string") {
-//     value = JSON.stringify(value);
-//   }
-//   // console.log('Value1: ', value);
-//   await SecureStore.setItemAsync(key, value);
-// }
+export async function secureSave(key: string, value: any) {
+  console.log("Value: ", value);
+  if (typeof value !== "string") {
+    value = JSON.stringify(value);
+  }
+  // console.log('Value1: ', value);
+  await SecureStore.setItemAsync(key, value);
+}
 
-// export async function secureGet(key: string, funcTodo: Function) {
-//   const result = await SecureStore.getItemAsync(key);
+export async function secureGet(key: string, funcTodo: Function) {
+  const result = await SecureStore.getItemAsync(key);
 
-//   // if (typeof result == 'string') {
-//   //   result = JSON.parse(result);
-//   // }
+  // if (typeof result == 'string') {
+  //   result = JSON.parse(result);
+  // }
 
-//   if (funcTodo != null) {
-//     funcTodo(result);
-//   } else if (result) {
-//     // console.log(`🔐 Here's your value 🔐 \n${result}`);
-//   } else {
-//     // console.log('No values stored under that key.');
-//   }
-// }
+  if (funcTodo != null) {
+    funcTodo(result);
+  } else if (result) {
+    // console.log(`🔐 Here's your value 🔐 \n${result}`);
+  } else {
+    // console.log('No values stored under that key.');
+  }
+}
+
+export async function getStuffFromSecureStore(key: string) {
+  // const result =
+  try {
+    return await SecureStore.getItemAsync(key).then((token) => {
+      // console.log(`🔐 Here's your value 🔐 \n${token}`);
+      // console.log('this is the token from SecureGet', key, token);
+      return token;
+    });
+  } catch (error) {
+    // console.log('Errors in getTokenFromSecureStore', error);
+    return null;
+  }
+
+  // return result;
+}

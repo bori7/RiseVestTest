@@ -7,3 +7,6 @@ export const GET_PLANS = `${BASE_URL}/${API_VERSION}/plans`;
 export const GET_PLAN_PROJECTION = `${BASE_URL}/${API_VERSION}/plans/projection`;
 export const GET_RATES = `${BASE_URL}/${API_VERSION}/rates`;
 export const GET_QUOTES = `${BASE_URL}/${API_VERSION}/quotes`;
+
+// ###############################################################
+export const IS_RISE_USER_KEY = "IS_RISE_USER";

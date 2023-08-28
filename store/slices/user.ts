@@ -7,8 +7,13 @@ import {
   SignUpUserRequestType,
   UserDataType,
 } from "../../shared/types/slices";
-import { LOGIN_URL, SIGNUP_URL } from "../../constants/values";
+import {
+  IS_RISE_USER_KEY,
+  LOGIN_URL,
+  SIGNUP_URL,
+} from "../../constants/values";
 import { apiPost } from "../../hooks/apiHooks";
+import { secureSave } from "../../shared/helper";
 
 const initialUserState: InitialUserStateType = {
   userData: null,
@@ -98,6 +103,8 @@ export const userSlice = createSlice({
           total_balance: respPayload?.total_balance,
           total_returns: respPayload?.total_returns,
         };
+
+        secureSave(IS_RISE_USER_KEY, IS_RISE_USER_KEY);
       }
     );
     builder.addCase(
@@ -147,6 +154,7 @@ export const userSlice = createSlice({
 
           date_of_birth: respPayload?.date_of_birth?.substring(0, 10),
         };
+        secureSave(IS_RISE_USER_KEY, IS_RISE_USER_KEY);
       }
     );
     builder.addCase(

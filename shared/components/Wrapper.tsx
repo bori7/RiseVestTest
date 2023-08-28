@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "react-native-toast-notifications";
 import { RootState, AppDispatch } from "../../store";
 import { COLORS, SIZES } from "../../constants/Colors";
-import { updateUserState } from "../../store/slices/user";
+import { updateUserData, updateUserState } from "../../store/slices/user";
 import { updatePlanState } from "../../store/slices/plan";
+import { getStuffFromSecureStore } from "../helper";
+import { IS_RISE_USER_KEY } from "../../constants/values";
 
 type props = {
   child: any;
@@ -49,7 +51,7 @@ export default function Wrapper({ child }: props) {
   };
 
   const userState = useSelector((state: RootState) => state.user);
-  const { userError, userMessage } = userState;
+  const { userError, userMessage, userData } = userState;
 
   const planState = useSelector((state: RootState) => state.plan);
   const { planError, planMessage } = planState;
@@ -118,6 +120,29 @@ export default function Wrapper({ child }: props) {
     //   );
     // });
   }, [userError, userMessage, planError, planMessage]);
+
+  const [isRiseUser, setRiseUser] = useState<null | string>();
+
+  useEffect(() => {
+    getIsRiseUser();
+  }, []);
+
+  const getIsRiseUser = async () => {
+    // console.log("Trying to get RISE USER KEY");
+    try {
+      const key: any = await getStuffFromSecureStore(IS_RISE_USER_KEY);
+      console.log("RISE USER KEY:: ", key);
+      dispatch(
+        updateUserData({
+          ...userData,
+          isRiseUserKey: key,
+        })
+      );
+    } catch (error) {
+      console.log("error while trying to get stuff from store", error);
+      return "";
+    }
+  };
 
   return (
     <View style={[{ height: "100%" }]}>

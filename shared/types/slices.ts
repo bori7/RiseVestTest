@@ -23,6 +23,7 @@ export interface UserDataType {
   phone_number?: string;
   date_of_birth?: string;
   password?: string;
+  isRiseUserKey?: string;
 }
 
 export interface InitialPlanStateType {
