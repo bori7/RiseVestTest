@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 15,
+    // paddingVertical: 15,
 
     // marginVertical: 10,
   },
@@ -64,6 +64,8 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "600",
     textAlign: "center",
+    // borderWidth: 1,
+    margin: 2,
   },
   opacity: {
     opacity: 0.8,

@@ -28,6 +28,8 @@ const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
   const [oneUpper, setOneUpper] = useState<boolean>(false);
   const [isStrong, setIsStrong] = useState<boolean>(false);
   const [validEmail, setValidEmail] = useState<boolean>(false);
+  const [allowEmailError, setAllowEmailError] = useState<boolean>(false);
+  const [emailErrorText, setEmailErrorText] = useState<string>("");
 
   const dispatch = useDispatch<AppDispatch>();
   const userState = useSelector((state: RootState) => state.user);
@@ -61,6 +63,11 @@ const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
       setValidEmail(true);
     } else {
       setValidEmail(false);
+      if (email) {
+        setEmailErrorText("Please enter a valid email");
+      } else {
+        setEmailErrorText("Please provide an email");
+      }
     }
 
     // ACTIVATE  BUTTON
@@ -75,6 +82,10 @@ const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
       setProceed(false);
     } else {
       setProceed(true);
+    }
+
+    if (email && validEmail) {
+      setEmailErrorText("");
     }
   }, [
     oneUpper,
@@ -127,21 +138,30 @@ const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
                   autoCapitalize="none"
                   autoCorrect={false}
                   selectionColor={
-                    validEmail
-                      ? COLORS.Light.colorOne
-                      : COLORS.Light.colorFourteen
+                    // validEmail && allowEmailError
+                    // ?
+                    COLORS.Light.colorOne
+                    // : COLORS.Light.colorFourteen
                   }
-                  outlineColor={COLORS.Light.colorTwentySix}
+                  outlineColor={
+                    !validEmail && allowEmailError
+                      ? COLORS.Light.colorFourteen
+                      : COLORS.Light.colorTwentySix
+                  }
                   activeOutlineColor={
-                    validEmail
-                      ? COLORS.Light.colorOne
-                      : COLORS.Light.colorFourteen
+                    // validEmail
+                    // ?
+                    COLORS.Light.colorOne
+                    // : COLORS.Light.colorFourteen
                   }
                   value={email}
                   onChangeText={(val) => {
                     setEmail(val);
                   }}
                 />
+                {allowEmailError && (
+                  <Text style={styles.errorText}>{emailErrorText}</Text>
+                )}
               </View>
               <View>
                 <TextInput
@@ -159,6 +179,9 @@ const SignUp: React.FC<NavigationProps> = ({ navigation }) => {
                   autoCapitalize="none"
                   onChangeText={(val) => {
                     setPassword(val);
+                  }}
+                  onFocus={() => {
+                    setAllowEmailError(true);
                   }}
                   right={
                     <TextInput.Icon
@@ -304,7 +327,14 @@ const styles = StyleSheet.create({
     color: COLORS.Light.colorTwentySeven,
     width: "100%",
     backgroundColor: COLORS.Light.background,
-    marginBottom: 18,
+    marginBottom: 8,
+  },
+  errorText: {
+    color: COLORS.Light.colorFourteen,
+    fontSize: SIZES.sizeFiveC,
+    fontWeight: "600",
+    marginBottom: 10,
+    marginLeft: 10,
   },
   eyeIcon: {
     width: "100%",

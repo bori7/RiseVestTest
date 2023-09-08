@@ -31,6 +31,9 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
   const [proceed, setProceed] = useState<boolean>(false);
   const [hidePassword, setHidePassword] = useState<boolean>(true);
   const [validEmail, setValidEmail] = useState<boolean>(false);
+  const [allowEmailError, setAllowEmailError] = useState<boolean>(false);
+  const [passwordErrorText, setPasswordErrorText] = useState<string>("");
+  const [emailErrorText, setEmailErrorText] = useState<string>("");
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -42,6 +45,11 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
       setValidEmail(true);
     } else {
       setValidEmail(false);
+      if (email) {
+        setEmailErrorText("Please enter a valid email");
+      } else {
+        setEmailErrorText("Please provide an email");
+      }
     }
 
     if (
@@ -61,8 +69,16 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
     // console.log("email::", email);
     // console.log("password::", password);
     fieldsFilled();
+    if (email && validEmail) {
+      setEmailErrorText("");
+    }
+    if (password) {
+      setPasswordErrorText("");
+    } else {
+      setPasswordErrorText("Please enter your password");
+    }
     // console.log("proceed::", proceed);
-  }, [email, password]);
+  }, [email, password, validEmail]);
 
   const resetAction = CommonActions.reset({
     index: 1,
@@ -132,15 +148,21 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
                 autoCorrect={false}
                 onBlur={() => fieldsFilled()}
                 selectionColor={
-                  validEmail
-                    ? COLORS.Light.colorOne
-                    : COLORS.Light.colorFourteen
+                  // !validEmail && allowEmailError
+                  // ? COLORS.Light.colorFourteen
+                  // :
+                  COLORS.Light.colorOne
                 }
-                outlineColor={COLORS.Light.colorTwentySix}
+                outlineColor={
+                  !validEmail && allowEmailError
+                    ? COLORS.Light.colorFourteen
+                    : COLORS.Light.colorTwentySix
+                }
                 activeOutlineColor={
-                  validEmail
-                    ? COLORS.Light.colorOne
-                    : COLORS.Light.colorFourteen
+                  // !validEmail && allowEmailError
+                  // ? COLORS.Light.colorFourteen
+                  // :
+                  COLORS.Light.colorOne
                 }
                 value={email}
                 onChangeText={(val) => {
@@ -148,6 +170,9 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
                   fieldsFilled();
                 }}
               />
+              {allowEmailError && (
+                <Text style={styles.errorText}>{emailErrorText}</Text>
+              )}
             </View>
             <View>
               <TextInput
@@ -159,7 +184,11 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
                 value={password}
                 secureTextEntry={hidePassword}
                 selectionColor={COLORS.Light.colorOne}
-                outlineColor={COLORS.Light.colorTwentySix}
+                outlineColor={
+                  !password && allowEmailError
+                    ? COLORS.Light.colorFourteen
+                    : COLORS.Light.colorTwentySix
+                }
                 activeOutlineColor={COLORS.Light.colorOne}
                 onBlur={() => fieldsFilled()}
                 style={{ ...styles.inputContent }}
@@ -176,11 +205,15 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
                   />
                 }
               />
+              {allowEmailError && (
+                <Text style={styles.errorText}>{passwordErrorText}</Text>
+              )}
             </View>
             <View style={styles.btn1Container}>
               <MainButton
                 title={"Sign In"}
                 onPressFunction={() => {
+                  setAllowEmailError(true);
                   signIn();
                 }}
                 err={false}
@@ -261,7 +294,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     width: "100%",
     // height: "70%",
-    marginVertical: 20,
+    marginVertical: 15,
   },
   inputContainer: {
     // borderWidth: 1,
@@ -279,7 +312,14 @@ const styles = StyleSheet.create({
     color: COLORS.Light.colorTwentySeven,
     width: "100%",
     backgroundColor: COLORS.Light.background,
-    marginBottom: 18,
+    marginBottom: 8,
+  },
+  errorText: {
+    color: COLORS.Light.colorFourteen,
+    fontSize: SIZES.sizeFiveC,
+    fontWeight: "600",
+    marginBottom: 10,
+    marginLeft: 10,
   },
   eyeIcon: {
     width: "100%",
