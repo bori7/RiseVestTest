@@ -99,7 +99,7 @@ export const planSlice = createSlice({
           code: action.error?.code || "89",
           message:
             action.payload?.message ||
-            action.error?.message ||
+            // action.error?.message ||
             "Unable to create plan at the moment",
         };
         state.planMessage = "";

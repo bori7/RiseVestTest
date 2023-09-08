@@ -116,8 +116,8 @@ export const userSlice = createSlice({
           code: action.error?.code || "89",
           message:
             action.payload?.message ||
-            action.error?.message ||
-            "Unable to log you in",
+            // action.error?.message ||
+            "Unable to log you in at the moment",
         };
         state.userMessage = "";
       }
@@ -166,8 +166,8 @@ export const userSlice = createSlice({
           code: action.error?.code || "89",
           message:
             action.payload?.message ||
-            action.error?.message ||
-            "Unable to sign you up",
+            // action.error?.message ||
+            "Unable to sign you up at the moment",
         };
         state.userMessage = "";
       }
