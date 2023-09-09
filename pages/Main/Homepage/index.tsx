@@ -8,8 +8,8 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-
-import React, { useState } from "react";
+import Constants from "expo-constants";
+import React, { useEffect, useState } from "react";
 import { Text, View } from "../../../components/Themed";
 import { COLORS, IMAGES, SIZES } from "../../../constants/Colors";
 import RiseLogoSVG from "../../../shared/assets/images/svg/riselogo.svg";
@@ -46,8 +46,8 @@ const HomePage: React.FC<NavigationProps> = ({ navigation }) => {
 
   const {
     data: plansData,
-    isLoading,
-    isError,
+    isLoading: plansLoading,
+    isError: plansError,
   } = useQuery<GetPlansResponseType>("getplans", () =>
     getPlans(userData?.token)
   );
@@ -70,115 +70,127 @@ const HomePage: React.FC<NavigationProps> = ({ navigation }) => {
 
   return (
     <View style={styles.main}>
-      <StatusBar barStyle="dark-content" />
-      <ImageBackground style={styles.container} source={IMAGES.HomeBg}>
-        <View style={styles.top}>
-          <View style={styles.r1}>
-            <View style={styles.r1c1}>
-              <Text style={styles.r1t1}>Good morning ☀</Text>
-              <Text style={styles.r1t2}>{userData?.first_name}</Text>
-            </View>
-            <View style={styles.r1c2}>
-              <TouchableOpacity style={styles.r1c2v1}>
-                <Text style={styles.r1t3}>Earn 3% bonus</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.r1c2v2}>
-                <BellButton
-                  fill={COLORS.Light.colorOne}
-                  height={30}
-                  width={30}
-                />
-                <Badge
-                  badgeSize={28}
-                  corner={8}
-                  text={"9+"}
-                  textSize={14}
-                  bgColor={COLORS.Light.colorFourteen}
-                  textColor={COLORS.Light.background}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <ImageBackground style={styles.r2}>
-            <View style={styles.r2r1}>
-              <Text style={styles.r2t1}>Total Balance</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  setHideMoney(!hideMoney);
-                }}
-              >
-                <Ionicons
-                  name={hideMoney ? "ios-eye" : "ios-eye-off"}
-                  size={14}
-                  color={COLORS.Light.colorOne}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.r2r2}>
-              <Text style={styles.r2t2}>
-                {hideMoney
-                  ? "*****"
-                  : `$${parseFloat(userData?.total_balance || "0.00").toFixed(
-                      2
-                    )}`}
-              </Text>
-            </View>
-            <View style={styles.r2r3}>
-              <Text style={styles.r2t3}>Total Gains </Text>
-              <Feather
-                name="arrow-up-right"
-                size={16}
-                color={COLORS.Light.colorFifteen}
-              />
-              <Text style={styles.r2t4}>{`${
-                Math.floor(
-                  parseFloat(userData?.total_returns || "0.00") /
-                    parseFloat(userData?.total_balance || "100.00")
-                ).toFixed(2) || "0.00"
-              }%`}</Text>
-              <TouchableOpacity>
-                <AntDesign
-                  name="right"
-                  size={14}
-                  color={COLORS.Light.colorTwentyFive}
-                />
-              </TouchableOpacity>
-            </View>
+      <StatusBar
+        barStyle="dark-content"
+        // backgroundColor={COLORS.Light.background}
+        // translucent={true}
+      />
 
-            <View style={styles.r2r4}>
-              {[1, 2, 3].map((_, idx) => (
-                <View key={idx} style={styles.slide}>
-                  <Octicons
-                    name={idx + 1 === 1 ? "dash" : "dot-fill"}
-                    size={idx + 1 === 1 ? 25 : 13}
-                    color={
-                      idx + 1 === 1
-                        ? COLORS.Light.colorOne
-                        : COLORS.Light.colorTwentySix
-                    }
-                  />
-                </View>
-              ))}
-            </View>
-          </ImageBackground>
-          <TouchableOpacity
-            style={styles.r3}
-            onPress={() => {
-              navigation.navigate(RootRoutes.FundWallet, {
-                screen: FundWalletRoutes.FundWallet,
-              });
-            }}
-          >
-            <Text style={styles.r3t1}>+</Text>
-            <Text style={styles.r3t2}>Add money</Text>
-          </TouchableOpacity>
-        </View>
+      <ImageBackground style={styles.container} source={IMAGES.HomeBg}>
         <View style={styles.scrollContainer}>
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scrollContent}
             style={styles.scroll}
           >
+            <View style={styles.top}>
+              <View style={styles.r1}>
+                <View style={styles.r1c1}>
+                  <Text style={styles.r1t1}>Good morning ☀</Text>
+                  <Text style={styles.r1t2}>{userData?.first_name}</Text>
+                </View>
+                <View style={styles.r1c2}>
+                  <TouchableOpacity style={styles.r1c2v1}>
+                    <Text style={styles.r1t3}>Earn 3% bonus</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.r1c2v2}>
+                    <BellButton
+                      fill={COLORS.Light.colorOne}
+                      height={30}
+                      width={30}
+                    />
+                    <Badge
+                      badgeSize={28}
+                      corner={8}
+                      text={"9+"}
+                      textSize={14}
+                      bgColor={COLORS.Light.colorFourteen}
+                      textColor={COLORS.Light.background}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.r2Shadow}>
+                <ImageBackground
+                  style={styles.r2}
+                  source={IMAGES.HomeBg}
+                  borderRadius={10}
+                  blurRadius={30}
+                >
+                  <View style={styles.r2r1}>
+                    <Text style={styles.r2t1}>Total Balance</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setHideMoney(!hideMoney);
+                      }}
+                    >
+                      <Ionicons
+                        name={hideMoney ? "ios-eye" : "ios-eye-off"}
+                        size={14}
+                        color={COLORS.Light.colorOne}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.r2r2}>
+                    <Text style={styles.r2t2}>
+                      {hideMoney
+                        ? "*****"
+                        : `$${parseFloat(
+                            userData?.total_balance || "0.00"
+                          ).toFixed(2)}`}
+                    </Text>
+                  </View>
+                  <View style={styles.r2r3}>
+                    <Text style={styles.r2t3}>Total Gains </Text>
+                    <Feather
+                      name="arrow-up-right"
+                      size={16}
+                      color={COLORS.Light.colorFifteen}
+                    />
+                    <Text style={styles.r2t4}>{`${
+                      Math.floor(
+                        parseFloat(userData?.total_returns || "0.00") /
+                          parseFloat(userData?.total_balance || "100.00")
+                      ).toFixed(2) || "0.00"
+                    }%`}</Text>
+                    <TouchableOpacity>
+                      <AntDesign
+                        name="right"
+                        size={14}
+                        color={COLORS.Light.colorTwentyFive}
+                      />
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={styles.r2r4}>
+                    {[1, 2, 3].map((_, idx) => (
+                      <View key={idx} style={styles.slide}>
+                        <Octicons
+                          name={idx + 1 === 1 ? "dash" : "dot-fill"}
+                          size={idx + 1 === 1 ? 25 : 13}
+                          color={
+                            idx + 1 === 1
+                              ? COLORS.Light.colorOne
+                              : COLORS.Light.colorTwentySix
+                          }
+                        />
+                      </View>
+                    ))}
+                  </View>
+                </ImageBackground>
+              </View>
+              <TouchableOpacity
+                style={styles.r3}
+                onPress={() => {
+                  navigation.navigate(RootRoutes.FundWallet, {
+                    screen: FundWalletRoutes.FundWallet,
+                  });
+                }}
+              >
+                <Text style={styles.r3t1}>+</Text>
+                <Text style={styles.r3t2}>Add money</Text>
+              </TouchableOpacity>
+            </View>
             <View style={styles.sr1}>
               <Text style={styles.sr1t1}>
                 {!planList?.length ? "Create a plan" : "Your plans"}
@@ -252,6 +264,8 @@ const HomePage: React.FC<NavigationProps> = ({ navigation }) => {
                     <ImageBackground
                       style={styles.planItem}
                       source={plans[Math.floor(Math.random() * plans.length)]}
+                      borderRadius={20}
+                      // blurRadius={-1}
                     >
                       <Text style={styles.planText}>{planItem.plan_name}</Text>
                       <Text
@@ -307,6 +321,7 @@ export default HomePage;
 const styles = StyleSheet.create({
   main: {
     flex: 1,
+    paddingTop: Constants.statusBarHeight * 0.9,
   },
   container: {
     // borderWidth: 1,
@@ -324,7 +339,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     // borderWidth: 1,
     width: "90%",
-    marginTop: "15%",
+    // marginTop: "2%",
     marginBottom: 5,
     alignItems: "center",
     backgroundColor: "transparent",
@@ -456,12 +471,12 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     shadowColor: COLORS.Light.colorTwentyFive,
     shadowOffset: {
-      width: 4,
-      height: 5,
+      width: 0,
+      height: 3,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 10,
+    shadowRadius: 5,
+    elevation: 2,
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
@@ -619,10 +634,34 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
+
     paddingVertical: 10,
     borderRadius: 10,
     borderColor: COLORS.Light.background,
+  },
+  r2Shadow: {
+    marginTop: 10,
+    // borderWidth: 1,
+    width: "100%",
+    borderRadius: 8,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.Light.colorTwentyFive,
+        shadowOffset: {
+          width: 0,
+          height: -2,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 1,
+      },
+      android: {
+        // elevation: 1,
+        shadowOpacity: 0.1,
+        shadowColor: COLORS.Light.colorTwentyFive,
+        // shadowRadius: 2,
+      },
+    }),
+    backgroundColor: "transparent",
   },
   r2r1: {
     // borderWidth: 1,
@@ -678,7 +717,8 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   slide: {
-    backgroundColor: COLORS.Light.colorEight,
+    // backgroundColor: COLORS.Light.colorEight,
+    backgroundColor: "transparent",
   },
   r3: {
     width: "100%",
