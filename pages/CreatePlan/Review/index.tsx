@@ -148,33 +148,6 @@ const Review: React.FC<NavigationProps> = ({ navigation }) => {
             </TouchableOpacity>
             <Text style={styles.headerText}>Review</Text>
           </View>
-
-          <View style={styles.subHeader}>
-            <Text style={styles.subHeaderR1}>{planData?.plan_name}</Text>
-            <Text style={styles.subHeaderR2}>
-              {`$${Math.floor(
-                parseFloat(planData?.target_amount || "0.00") /
-                  parseFloat(rateData?.buy_rate || "100.00")
-              ).toFixed(2)}` || "0.00"}
-            </Text>
-            <Text style={styles.subHeaderR3}>
-              {formatDatePlaDetails(planData?.maturity_date)}
-            </Text>
-            <View style={styles.subHeaderR4}>
-              <View style={styles.subHeaderC}>
-                <View style={styles.subHeaderD1}></View>
-                <Text style={styles.subHeaderC1}>{`Investments • $${
-                  projectionData?.total_invested || "0.00"
-                } `}</Text>
-              </View>
-              <View style={styles.subHeaderC}>
-                <View style={styles.subHeaderD2}></View>
-                <Text style={styles.subHeaderC1}>{`Returns • $${
-                  projectionData?.total_returns || "0.00"
-                }`}</Text>
-              </View>
-            </View>
-          </View>
         </View>
       </View>
       <ScrollView
@@ -182,6 +155,32 @@ const Review: React.FC<NavigationProps> = ({ navigation }) => {
         contentContainerStyle={styles.scrollContent}
         style={styles.scroll}
       >
+        <View style={styles.subHeader}>
+          <Text style={styles.subHeaderR1}>{planData?.plan_name}</Text>
+          <Text style={styles.subHeaderR2}>
+            {`$${Math.floor(
+              parseFloat(planData?.target_amount || "0.00") /
+                parseFloat(rateData?.buy_rate || "100.00")
+            ).toFixed(2)}` || "0.00"}
+          </Text>
+          <Text style={styles.subHeaderR3}>
+            {formatDatePlaDetails(planData?.maturity_date)}
+          </Text>
+          <View style={styles.subHeaderR4}>
+            <View style={styles.subHeaderC}>
+              <View style={styles.subHeaderD1}></View>
+              <Text style={styles.subHeaderC1}>{`Investments • $${
+                projectionData?.total_invested || "0.00"
+              } `}</Text>
+            </View>
+            <View style={styles.subHeaderC}>
+              <View style={styles.subHeaderD2}></View>
+              <Text style={styles.subHeaderC1}>{`Returns • $${
+                projectionData?.total_returns || "0.00"
+              }`}</Text>
+            </View>
+          </View>
+        </View>
         <LineChart
           data={{
             labels: [
@@ -341,6 +340,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
+    marginHorizontal: 25,
   },
   subHeaderR1: {
     fontSize: SIZES.sizeSix,
@@ -411,12 +411,14 @@ const styles = StyleSheet.create({
     color: COLORS.Light.colorTwentyFour,
     marginBottom: 6,
     fontWeight: "400",
+    flex: 1,
   },
   bR1t2: {
     fontSize: SIZES.sizeSixB,
     color: COLORS.Light.colorTwentyFive,
     marginBottom: 6,
     fontWeight: "500",
+    marginLeft: 10,
   },
   bR2: {
     borderTopWidth: 2,

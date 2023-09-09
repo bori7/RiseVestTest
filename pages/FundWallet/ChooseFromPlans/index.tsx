@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   ImageBackground,
   ImageURISource,
   ScrollView,
@@ -40,8 +41,8 @@ const CFP: React.FC<NavigationProps> = ({ navigation }) => {
 
   const {
     data: plansData,
-    isLoading,
-    isError,
+    isLoading: plansLoading,
+    isError: plansError,
   } = useQuery<GetPlansResponseType>("getplans", () =>
     getPlans(userData?.token)
   );
@@ -87,53 +88,61 @@ const CFP: React.FC<NavigationProps> = ({ navigation }) => {
             </TouchableOpacity>
             <Text style={styles.headerText}>Choose from plans</Text>
           </View>
-          <Text style={styles.subHeader}>
-            {`${
-              planList?.length
-                ? "Tap on any of the plans to select"
-                : "There no plans to select from"
-            }`}
-          </Text>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContent}
-            style={styles.scroll}
-          >
-            <View style={styles.plans}>
-              {planList?.map((p, index) => (
-                <TouchableOpacity
-                  key={`#${index}`}
-                  style={styles.plan}
-                  onPress={() => {
-                    navigation.navigate(FundWalletRoutes.SelectBank);
-                  }}
-                >
-                  <ImageBackground
-                    style={styles.planItem}
-                    source={plans[Math.floor(Math.random() * plans.length)].img}
-                    borderRadius={20}
-                  >
-                    <View style={styles.pDas}>
-                      <View style={styles.pDa}>
-                        <Text style={styles.planText}>{p.plan_name}</Text>
-                        <Text
-                          style={styles.planTextB}
-                        >{`$${p.target_amount}`}</Text>
-                        <Text style={styles.planText}>{""}</Text>
-                      </View>
-                      <View style={styles.pDb}>
-                        <AntDesign
-                          name="arrowright"
-                          size={24}
-                          color={COLORS.Light.background}
-                        />
-                      </View>
-                    </View>
-                  </ImageBackground>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
+          {!plansLoading ? (
+            <>
+              <Text style={styles.subHeader}>
+                {`${
+                  planList?.length
+                    ? "Tap on any of the plans to select"
+                    : "There no plans to select from"
+                }`}
+              </Text>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContent}
+                style={styles.scroll}
+              >
+                <View style={styles.plans}>
+                  {planList?.map((p, index) => (
+                    <TouchableOpacity
+                      key={`#${index}`}
+                      style={styles.plan}
+                      onPress={() => {
+                        navigation.navigate(FundWalletRoutes.SelectBank);
+                      }}
+                    >
+                      <ImageBackground
+                        style={styles.planItem}
+                        source={
+                          plans[Math.floor(Math.random() * plans.length)].img
+                        }
+                        borderRadius={20}
+                      >
+                        <View style={styles.pDas}>
+                          <View style={styles.pDa}>
+                            <Text style={styles.planText}>{p.plan_name}</Text>
+                            <Text
+                              style={styles.planTextB}
+                            >{`$${p.target_amount}`}</Text>
+                            <Text style={styles.planText}>{""}</Text>
+                          </View>
+                          <View style={styles.pDb}>
+                            <AntDesign
+                              name="arrowright"
+                              size={24}
+                              color={COLORS.Light.background}
+                            />
+                          </View>
+                        </View>
+                      </ImageBackground>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </ScrollView>
+            </>
+          ) : (
+            <ActivityIndicator size="large" color={COLORS.Light.background} />
+          )}
         </View>
       </View>
     </View>
@@ -219,6 +228,7 @@ const styles = StyleSheet.create({
     color: COLORS.Light.background,
     fontSize: SIZES.sizeSix,
     fontWeight: "400",
+    textTransform: "capitalize",
   },
   planTextB: {
     color: COLORS.Light.background,

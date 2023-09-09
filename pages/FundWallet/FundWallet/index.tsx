@@ -306,6 +306,7 @@ const styles = StyleSheet.create({
   rc3: {
     // borderWidth: 1,
     alignItems: "flex-end",
+    marginLeft: 5,
   },
   rc3t1: {
     marginBottom: 5,

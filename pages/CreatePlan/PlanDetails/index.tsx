@@ -465,6 +465,7 @@ const styles = StyleSheet.create({
     color: COLORS.Light.background,
     fontWeight: "700",
     fontSize: SIZES.sizeNine,
+    textTransform: "capitalize",
   },
   headingC2t2: {
     color: COLORS.Light.background,

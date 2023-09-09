@@ -442,6 +442,7 @@ const styles = StyleSheet.create({
     color: COLORS.Light.background,
     fontSize: SIZES.sizeEight,
     fontWeight: "400",
+    textTransform: "capitalize",
   },
   planAddIcon: {
     width: 70,
@@ -609,6 +610,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.sizeNine,
     fontWeight: "400",
     marginVertical: 5,
+    textTransform: "capitalize",
   },
   r1c2: {
     flexDirection: "row",
