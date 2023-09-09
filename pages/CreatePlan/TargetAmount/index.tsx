@@ -23,6 +23,8 @@ const TargetAmount: React.FC<NavigationProps> = ({ navigation }) => {
   const [amount, setAmount] = useState<string>("");
   const [proceed, setProceed] = useState<boolean>(false);
   const [validAmount, setValidAmount] = useState<boolean>(true);
+  const [allowAmountrror, setAllowAmountError] = useState<boolean>(false);
+  const [amountErrorText, setAmountErrorText] = useState<string>("");
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -45,6 +47,11 @@ const TargetAmount: React.FC<NavigationProps> = ({ navigation }) => {
       setValidAmount(true);
     } else {
       setValidAmount(false);
+    }
+    if (amount && validAmount) {
+      setAmountErrorText("");
+    } else {
+      setAmountErrorText("Please enter a valid target amount");
     }
     if (amount !== "" && amount !== " " && validAmount) {
       setProceed(true);
@@ -114,25 +121,39 @@ const TargetAmount: React.FC<NavigationProps> = ({ navigation }) => {
               autoCorrect={false}
               onBlur={() => fieldsFilled()}
               selectionColor={
-                validAmount ? COLORS.Light.colorOne : COLORS.Light.colorFourteen
+                allowAmountrror && !validAmount
+                  ? COLORS.Light.colorFourteen
+                  : COLORS.Light.colorOne
               }
-              outlineColor={COLORS.Light.colorTwentySix}
+              outlineColor={
+                allowAmountrror && !validAmount
+                  ? COLORS.Light.colorTwentySix
+                  : COLORS.Light.colorOne
+              }
               activeOutlineColor={
-                validAmount ? COLORS.Light.colorOne : COLORS.Light.colorFourteen
+                allowAmountrror && !validAmount
+                  ? COLORS.Light.colorFourteen
+                  : COLORS.Light.colorOne
               }
               value={amount}
               onChangeText={(val) => {
                 setAmount(val);
                 fieldsFilled();
+                setAllowAmountError(true);
               }}
               left={
                 <TextInput.Icon
                   icon={"currency-ngn"}
                   color={COLORS.Light.colorOne}
+                  size={15}
                 />
               }
             />
+            {allowAmountrror && (
+              <Text style={styles.errorText}>{amountErrorText}</Text>
+            )}
           </View>
+
           <View style={styles.btn1Container}>
             <MainButton
               title={"Continue"}
@@ -233,5 +254,12 @@ const styles = StyleSheet.create({
   btn1Container: { marginVertical: 20 },
   btn1: {
     borderRadius: 5,
+  },
+  errorText: {
+    color: COLORS.Light.colorFourteen,
+    fontSize: SIZES.sizeFiveC,
+    fontWeight: "600",
+    marginBottom: 10,
+    marginLeft: 10,
   },
 });

@@ -1,7 +1,6 @@
 import {
   ImageBackground,
   ImageURISource,
-  Platform,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -112,6 +111,7 @@ const CFP: React.FC<NavigationProps> = ({ navigation }) => {
                   <ImageBackground
                     style={styles.planItem}
                     source={plans[Math.floor(Math.random() * plans.length)].img}
+                    borderRadius={20}
                   >
                     <View style={styles.pDas}>
                       <View style={styles.pDa}>
@@ -207,9 +207,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   planItem: {
-    height: Platform.OS === "android" ? 180 : 210,
+    height: 210,
     // borderWidth: 1,
-    width: Platform.OS === "android" ? 140 : 160,
+    width: 160,
     // borderRadius: 50,
     justifyContent: "flex-end",
     padding: 10,

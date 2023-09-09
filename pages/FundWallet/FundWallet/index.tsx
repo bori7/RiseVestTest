@@ -47,7 +47,7 @@ const FundWallet: React.FC<NavigationProps> = ({ navigation }) => {
     data: rateData,
     isLoading: rateDataLoading,
     isError: rateDataError,
-  } = useQuery<GetRatesResponseType>("getrate2", () =>
+  } = useQuery<GetRatesResponseType>("getrate", () =>
     getRates(userData?.token)
   );
 
@@ -89,7 +89,7 @@ const FundWallet: React.FC<NavigationProps> = ({ navigation }) => {
     },
   ];
 
-  const [visible, setVisible] = useState<boolean>(true);
+  const [visible, setVisible] = useState<boolean>(false);
   const [proceed, setProceed] = useState<boolean>(false);
   const statusBarConfig = visible
     ? {
@@ -127,7 +127,7 @@ const FundWallet: React.FC<NavigationProps> = ({ navigation }) => {
                 key={idx}
                 style={styles.r}
                 onPress={() => {
-                  navigation.navigate(FundWalletRoutes.ChooseFromPlans);
+                  setVisible(true);
                 }}
               >
                 <TouchableOpacity style={styles.rc1}>
@@ -206,6 +206,7 @@ const FundWallet: React.FC<NavigationProps> = ({ navigation }) => {
                     title={"Accept & Continue"}
                     onPressFunction={() => {
                       closeModal();
+                      navigation.navigate(FundWalletRoutes.ChooseFromPlans);
                     }}
                     err={false}
                     btnStyle={styles.btn1}
