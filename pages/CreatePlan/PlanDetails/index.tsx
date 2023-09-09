@@ -1,6 +1,8 @@
 import {
+  ActivityIndicator,
   Dimensions,
   ImageBackground,
+  LogBox,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -31,6 +33,8 @@ import {
 } from "../../../shared/types/queries";
 import { formatDatePlaDetails } from "../../../shared/helper";
 import { getRates } from "../../../services/General";
+
+LogBox.ignoreAllLogs();
 
 type NavigationProps = CompositeScreenProps<
   CreatePlanProps<CreatePlanRoutes.PlanDetails>,
@@ -150,6 +154,25 @@ const PlanDetails: React.FC<NavigationProps> = ({ navigation, route }) => {
       date: "Jun 19, 2021",
     },
   ];
+  if (
+    projectionDataLoading ||
+    rateDataLoading ||
+    planDateLoading ||
+    // !projectionData ||
+    !rateData ||
+    !planData
+  ) {
+    return (
+      <View style={styles.main}>
+        <View style={[styles.container, { justifyContent: "center" }]}>
+          <View style={[styles.heading]}>
+            <ActivityIndicator size="large" color={COLORS.Light.colorSix} />
+          </View>
+        </View>
+      </View>
+    );
+  }
+  // else {
   return (
     <View style={styles.main}>
       <StatusBar barStyle="light-content" />
@@ -383,6 +406,7 @@ const PlanDetails: React.FC<NavigationProps> = ({ navigation, route }) => {
       </View>
     </View>
   );
+  // }
 };
 
 export default PlanDetails;

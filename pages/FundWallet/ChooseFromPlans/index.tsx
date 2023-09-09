@@ -141,7 +141,7 @@ const CFP: React.FC<NavigationProps> = ({ navigation }) => {
               </ScrollView>
             </>
           ) : (
-            <ActivityIndicator size="large" color={COLORS.Light.background} />
+            <ActivityIndicator size="large" color={COLORS.Light.colorSix} />
           )}
         </View>
       </View>
