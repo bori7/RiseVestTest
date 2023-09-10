@@ -197,6 +197,9 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
                   setPassword(val);
                   fieldsFilled();
                 }}
+                onFocus={() => {
+                  setAllowEmailError(true);
+                }}
                 right={
                   <TextInput.Icon
                     icon={hidePassword ? "eye-off" : "eye"}

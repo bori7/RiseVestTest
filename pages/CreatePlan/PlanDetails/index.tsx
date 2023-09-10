@@ -159,8 +159,8 @@ const PlanDetails: React.FC<NavigationProps> = ({ navigation, route }) => {
     rateDataLoading ||
     planDateLoading ||
     // !projectionData ||
-    !rateData ||
-    !planData
+    // !rateData ||
+    // !planData
   ) {
     return (
       <View style={styles.main}>
