@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
   top: {
     // flex: 1,
     // borderWidth: 1,
-    width: "90%",
+    width: "100%",
     // marginTop: "2%",
     marginBottom: 5,
     alignItems: "center",
