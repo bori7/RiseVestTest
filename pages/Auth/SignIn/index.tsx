@@ -1,4 +1,5 @@
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -32,6 +33,7 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState<boolean>(true);
   const [validEmail, setValidEmail] = useState<boolean>(false);
   const [allowEmailError, setAllowEmailError] = useState<boolean>(false);
+  const [allowPasswordError, setPasswordError] = useState<boolean>(false);
   const [passwordErrorText, setPasswordErrorText] = useState<string>("");
   const [emailErrorText, setEmailErrorText] = useState<string>("");
 
@@ -125,113 +127,115 @@ const SignIn: React.FC<NavigationProps> = ({ navigation }) => {
     <View style={styles.main}>
       <View style={styles.container}>
         <View style={styles.top}>
-          {/* <KeyboardAvoidingView
+          <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.aware}
-          > */}
-          <Text style={styles.welcomeStyle}>Welcome back</Text>
-          <Text style={styles.subStyle}>
-            Let’s get you logged in to get back to building your
-            dollar-denominated investment portfolio.
-          </Text>
-          <View style={styles.input}>
-            <View>
-              <TextInput
-                mode="outlined"
-                label={"Email address"}
-                // placeholder={"Email address"}
-                placeholderTextColor={COLORS.Light.colorTwentySeven}
-                textContentType="emailAddress"
-                style={{ ...styles.inputContent }}
-                keyboardType="default"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onBlur={() => fieldsFilled()}
-                selectionColor={
-                  // !validEmail && allowEmailError
-                  // ? COLORS.Light.colorFourteen
-                  // :
-                  COLORS.Light.colorOne
-                }
-                outlineColor={
-                  !validEmail && allowEmailError
-                    ? COLORS.Light.colorFourteen
-                    : COLORS.Light.colorTwentySix
-                }
-                activeOutlineColor={
-                  // !validEmail && allowEmailError
-                  // ? COLORS.Light.colorFourteen
-                  // :
-                  COLORS.Light.colorOne
-                }
-                value={email}
-                onChangeText={(val) => {
-                  setEmail(val);
-                  fieldsFilled();
-                }}
-              />
-              {allowEmailError && (
-                <Text style={styles.errorText}>{emailErrorText}</Text>
-              )}
+          >
+            <Text style={styles.welcomeStyle}>Welcome back</Text>
+            <Text style={styles.subStyle}>
+              Let’s get you logged in to get back to building your
+              dollar-denominated investment portfolio.
+            </Text>
+            <View style={styles.input}>
+              <View>
+                <TextInput
+                  mode="outlined"
+                  label={"Email address"}
+                  // placeholder={"Email address"}
+                  placeholderTextColor={COLORS.Light.colorTwentySeven}
+                  textContentType="emailAddress"
+                  style={{ ...styles.inputContent }}
+                  keyboardType="default"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onBlur={() => fieldsFilled()}
+                  selectionColor={
+                    // !validEmail && allowEmailError
+                    // ? COLORS.Light.colorFourteen
+                    // :
+                    COLORS.Light.colorOne
+                  }
+                  outlineColor={
+                    !validEmail && allowEmailError
+                      ? COLORS.Light.colorFourteen
+                      : COLORS.Light.colorTwentySix
+                  }
+                  activeOutlineColor={
+                    // !validEmail && allowEmailError
+                    // ? COLORS.Light.colorFourteen
+                    // :
+                    COLORS.Light.colorOne
+                  }
+                  value={email}
+                  onChangeText={(val) => {
+                    setEmail(val);
+                    fieldsFilled();
+                  }}
+                />
+                {allowEmailError && (
+                  <Text style={styles.errorText}>{emailErrorText}</Text>
+                )}
+              </View>
+              <View>
+                <TextInput
+                  mode="outlined"
+                  label={"Password"}
+                  // placeholder={"Password"}
+                  placeholderTextColor={COLORS.Light.colorTwentySeven}
+                  textContentType="password"
+                  value={password}
+                  secureTextEntry={hidePassword}
+                  selectionColor={COLORS.Light.colorOne}
+                  outlineColor={
+                    !password && allowPasswordError
+                      ? COLORS.Light.colorFourteen
+                      : COLORS.Light.colorTwentySix
+                  }
+                  activeOutlineColor={COLORS.Light.colorOne}
+                  onBlur={() => fieldsFilled()}
+                  style={{ ...styles.inputContent }}
+                  autoCapitalize="none"
+                  onChangeText={(val) => {
+                    setPassword(val);
+                    fieldsFilled();
+                  }}
+                  onFocus={() => {
+                    setAllowEmailError(true);
+                  }}
+                  right={
+                    <TextInput.Icon
+                      icon={hidePassword ? "eye-off" : "eye"}
+                      color={COLORS.Light.colorOne}
+                      onPress={() => setHidePassword(!hidePassword)}
+                    />
+                  }
+                />
+                {allowPasswordError && (
+                  <Text style={styles.errorText}>{passwordErrorText}</Text>
+                )}
+              </View>
+              <View style={styles.btn1Container}>
+                <MainButton
+                  title={"Sign In"}
+                  onPressFunction={() => {
+                    setAllowEmailError(true);
+                    setPasswordError(true);
+                    Keyboard.dismiss();
+                    signIn();
+                  }}
+                  err={false}
+                  btnStyle={styles.btn1}
+                  disabled={!proceed || userLoading}
+                  loading={userLoading}
+                />
+              </View>
+              <View style={styles.btn2Container}>
+                <TouchableOpacity onPress={() => {}}>
+                  <Text style={styles.btn2}>I forgot my password</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <View>
-              <TextInput
-                mode="outlined"
-                label={"Password"}
-                // placeholder={"Password"}
-                placeholderTextColor={COLORS.Light.colorTwentySeven}
-                textContentType="password"
-                value={password}
-                secureTextEntry={hidePassword}
-                selectionColor={COLORS.Light.colorOne}
-                outlineColor={
-                  !password && allowEmailError
-                    ? COLORS.Light.colorFourteen
-                    : COLORS.Light.colorTwentySix
-                }
-                activeOutlineColor={COLORS.Light.colorOne}
-                onBlur={() => fieldsFilled()}
-                style={{ ...styles.inputContent }}
-                autoCapitalize="none"
-                onChangeText={(val) => {
-                  setPassword(val);
-                  fieldsFilled();
-                }}
-                onFocus={() => {
-                  setAllowEmailError(true);
-                }}
-                right={
-                  <TextInput.Icon
-                    icon={hidePassword ? "eye-off" : "eye"}
-                    color={COLORS.Light.colorOne}
-                    onPress={() => setHidePassword(!hidePassword)}
-                  />
-                }
-              />
-              {allowEmailError && (
-                <Text style={styles.errorText}>{passwordErrorText}</Text>
-              )}
-            </View>
-            <View style={styles.btn1Container}>
-              <MainButton
-                title={"Sign In"}
-                onPressFunction={() => {
-                  setAllowEmailError(true);
-                  signIn();
-                }}
-                err={false}
-                btnStyle={styles.btn1}
-                disabled={!proceed || userLoading}
-                loading={userLoading}
-              />
-            </View>
-            <View style={styles.btn2Container}>
-              <TouchableOpacity onPress={() => {}}>
-                <Text style={styles.btn2}>I forgot my password</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          {/* </KeyboardAvoidingView> */}
+          </KeyboardAvoidingView>
         </View>
         <View style={styles.bottom}>
           <Text style={{ ...styles.btn2, color: COLORS.Light.colorTwentyFour }}>
@@ -281,6 +285,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
     marginBottom: "10%",
+    alignSelf: "flex-end",
   },
   welcomeStyle: {
     fontSize: SIZES.sizeSeven,

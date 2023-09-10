@@ -157,7 +157,7 @@ const PlanDetails: React.FC<NavigationProps> = ({ navigation, route }) => {
   if (
     projectionDataLoading ||
     rateDataLoading ||
-    planDateLoading ||
+    planDateLoading
     // !projectionData ||
     // !rateData ||
     // !planData
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    borderWidth: 1,
+    // borderWidth: 1,
     flex: 1,
     alignItems: "center",
     backgroundColor: COLORS.Light.background,
